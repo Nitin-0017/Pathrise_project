@@ -1,0 +1,159 @@
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.dashboard-container {
+  display: flex;
+  justify-content: flex-start;
+  height: 100vh;
+  width: 100%;
+  background: #f3f2ef;
+}
+
+
+/* ---------- SIDEBAR ---------- */
+.sidebar {
+  width: 260px;
+  background: white;
+  padding: 25px;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;             
+}
+
+
+.profile-section {
+  text-align: center;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  background: #0a66c2;
+  color: white;
+  border-radius: 50%;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+.profile-section h3 {
+  margin: 10px 0 2px;
+  font-size: 20px;
+}
+
+.role {
+  font-size: 13px;
+  color: #666;
+}
+
+/* ---------- MENU ---------- */
+.menu {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-item {
+  background: none;
+  border: none;
+  padding: 12px 15px;
+  font-size: 15px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #444;
+  transition: 0.2s;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: #eef3f8;
+  color: #0a66c2;
+  font-weight: 600;
+}
+
+/* ---------- LOGOUT BUTTON ---------- */
+.logout-btn {
+  margin-top: 30px;
+  padding: 12px;
+  border: 1px solid #d9534f;
+  background: white;
+  color: #d9534f;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #d9534f;
+  color: white;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+.main-content {
+  flex: 1;
+  padding: 40px 50px;
+  overflow-y: auto;
+}
+
+.main-content h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+}
+
+.subtext {
+  color: #666;
+  margin-top: 5px;
+}
+
+/* ---------- CARDS SECTION ---------- */
+.cards {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.card-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #e3e3e3;
+  transition: box-shadow 0.2s;
+}
+
+.card-box:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.card-box h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.card-box p {
+  color: #666;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* ---------- LOADING SCREEN ---------- */
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #0a66c2;
+}

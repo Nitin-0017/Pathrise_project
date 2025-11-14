@@ -1,10 +1,10 @@
-import User from "../models/userModel.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+const User = require("../models/userModel");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const JWT_EXPIRY = "7d"; 
 
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
     if (!name || !email || !password) {
@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ message: "Provide email and password." });
@@ -50,3 +50,7 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+module.exports = {
+  login,signup
+}

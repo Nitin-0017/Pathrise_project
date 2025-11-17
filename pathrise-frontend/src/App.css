@@ -1,4 +1,4 @@
-/* ---------------- GLOBAL ---------------- */
+
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -43,7 +43,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------------- TITLES ---------------- */
+
 .form-title {
   font-size: 26px;
   font-weight: 700;
@@ -59,7 +59,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* ---------------- ALERT BOX ---------------- */
 .alert {
   background: #fee2e2;
   color: #b91c1c;
@@ -70,7 +69,7 @@ body {
   border: 1px solid #fecaca;
 }
 
-/* ---------------- INPUTS ---------------- */
+
 .input {
   width: 100%;
   padding: 12px 14px;
@@ -88,7 +87,7 @@ body {
   outline: none;
 }
 
-/* ---------------- BUTTON ---------------- */
+
 .btn {
   width: 100%;
   padding: 12px 14px;
@@ -108,7 +107,7 @@ body {
   background: #084c8f;
 }
 
-/* ---------------- BOTTOM LINK ---------------- */
+
 .link-row {
   margin-top: 18px;
   text-align: center;
@@ -126,7 +125,6 @@ body {
   text-decoration: underline;
 }
 
-/* ---------------- MOBILE ---------------- */
 @media (max-width: 480px) {
   .card {
     width: 90%;

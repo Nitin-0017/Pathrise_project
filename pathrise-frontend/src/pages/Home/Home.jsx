@@ -26,7 +26,7 @@ export default function Dashboard() {
   return (
   <div className="dashboard-container">
 
-    {/* LEFT SIDEBAR */}
+  
     <aside className="sidebar">
       <div className="profile-section">
         <div className="avatar">{user.name[0].toUpperCase()}</div>
@@ -46,9 +46,9 @@ export default function Dashboard() {
       </div>
     </aside>
 
-    {/* MAIN CONTENT */}
+
     <main className="main-content">
-      <h1>Welcome back, {user.name.split(" ")[0]} 👋</h1>
+      <h1>Welcome back, {user.name.split(" ")[0]} </h1>
       <p className="subtext">Here’s what’s happening today</p>
 
       <div className="cards">

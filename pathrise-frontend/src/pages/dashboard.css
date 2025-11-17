@@ -1,29 +1,24 @@
-body{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 .dashboard-container {
   display: flex;
-  justify-content: flex-start;
   height: 100vh;
-  width: 100%;
-  background: #f3f2ef;
+  background: #f4f6f9;
 }
 
 
-/* ---------- SIDEBAR ---------- */
 .sidebar {
   width: 260px;
   background: white;
-  padding: 25px;
-  border-right: 1px solid #ddd;
+  padding: 24px;
+  border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100vh;             
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
-
 
 .profile-section {
   text-align: center;
@@ -32,128 +27,146 @@ body{
 .avatar {
   width: 70px;
   height: 70px;
-  background: #0a66c2;
+  margin: auto;
+  background: #2563eb;
   color: white;
   border-radius: 50%;
-  font-size: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 10px;
-}
-
-.profile-section h3 {
-  margin: 10px 0 2px;
-  font-size: 20px;
+  font-size: 32px;
+  font-weight: bold;
 }
 
 .role {
-  font-size: 13px;
-  color: #666;
+  font-size: 14px;
+  color: #6b7280;
+  text-transform: capitalize;
+  margin-top: -4px;
 }
 
-/* ---------- MENU ---------- */
+
 .menu {
-  margin-top: 30px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .menu-item {
-  background: none;
-  border: none;
-  padding: 12px 15px;
-  font-size: 15px;
+  padding: 12px 16px;
   text-align: left;
+  border: none;
   border-radius: 8px;
-  cursor: pointer;
-  color: #444;
+  font-size: 15px;
+  background: transparent;
+  color: #374151;
   transition: 0.2s;
 }
 
-.menu-item:hover,
+.menu-item:hover {
+  background: #f3f4f6;
+}
+
 .menu-item.active {
-  background: #eef3f8;
-  color: #0a66c2;
-  font-weight: 600;
-}
-
-/* ---------- LOGOUT BUTTON ---------- */
-.logout-btn {
-  margin-top: 30px;
-  padding: 12px;
-  border: 1px solid #d9534f;
-  background: white;
-  color: #d9534f;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.logout-btn:hover {
-  background: #d9534f;
+  background: #2563eb;
   color: white;
 }
 
-/* ---------- MAIN CONTENT ---------- */
-.main-content {
-  flex: 1;
-  padding: 40px 50px;
-  overflow-y: auto;
+
+.sidebar-footer {
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
 }
 
-.main-content h1 {
-  margin: 0;
-  font-size: 32px;
-  font-weight: 700;
-  color: #222;
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 40px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .subtext {
-  color: #666;
-  margin-top: 5px;
+  color: #6b7280;
+  margin-bottom: 24px;
 }
 
-/* ---------- CARDS SECTION ---------- */
 .cards {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .card-box {
+  width: 240px;
+  padding: 20px;
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  border: 1px solid #e3e3e3;
-  transition: box-shadow 0.2s;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  transition: 0.2s;
 }
 
 .card-box:hover {
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
 }
 
 .card-box h2 {
-  margin: 0;
   font-size: 20px;
+  margin-bottom: 6px;
 }
 
 .card-box p {
-  color: #666;
-  margin-top: 8px;
-  font-size: 14px;
+  color: #6b7280;
 }
 
-/* ---------- LOADING SCREEN ---------- */
 .loading-screen {
-  height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  height: 100vh;
   font-size: 22px;
+  color: #2563eb;
   font-weight: bold;
-  color: #0a66c2;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 210px;
+  }
+
+  .main-content {
+    margin-left: 210px;
+    padding: 24px;
+  }
+
+  .cards {
+    justify-content: center;
+  }
+
+  .card-box {
+    width: 100%;
+  }
 }

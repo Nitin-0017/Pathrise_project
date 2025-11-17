@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 
 
-const API = "http://localhost:3000";
+const API = import.meta.env.VITE_BACKEND_URL;
 
 
 

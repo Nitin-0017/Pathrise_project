@@ -9,6 +9,8 @@ router.get("/", requireAuth, getJobs);
 // Employer/Admin only
 router.post("/", requireAuth, requireRole("Employer", "Admin"), createJob);
 router.put("/:id", requireAuth, requireRole("Employer", "Admin"), updateJob);
-router.delete("/:id", requireAuth, requireRole("Admin"), deleteJob);
+// Employer can delete their own jobs, Admin can delete any job (optional)
+router.delete("/:id", requireAuth, requireRole("Employer", "Admin"), deleteJob);
+
 
 module.exports = router;

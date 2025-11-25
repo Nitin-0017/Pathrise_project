@@ -1,12 +1,42 @@
 const express = require("express");
 const router = express.Router();
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
-const { applyToJob, getApplications } = require("../controllers/applicationController");
+const { 
+  applyToJob, 
+  getApplications,
+  getApplicationsByUser 
+} = require("../controllers/applicationController");
 
-// Candidates apply
-router.post("/", requireAuth, requireRole("Candidate"), applyToJob);
+/* ----------------------------------------
+   1) Candidate applies to a job
+----------------------------------------- */
+router.post(
+  "/", 
+  requireAuth, 
+  requireRole("Candidate"), 
+  applyToJob
+);
 
-// Employers/Admin view
-router.get("/", requireAuth, requireRole("Employer", "Admin"), getApplications);
+/* ----------------------------------------
+   2) Candidate can view ONLY THEIR applications
+   URL → /api/applications/user/:id
+----------------------------------------- */
+router.get(
+  "/user/:id", 
+  requireAuth, 
+  requireRole("Candidate"), 
+  getApplicationsByUser
+);
+
+/* ----------------------------------------
+   3) Employer/Admin can view ALL applications
+   URL → /api/applications
+----------------------------------------- */
+router.get(
+  "/", 
+  requireAuth, 
+  requireRole("Employer", "Admin"), 
+  getApplications
+);
 
 module.exports = router;

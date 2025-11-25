@@ -17,21 +17,35 @@ export default function Login() {
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      const res = await axios.post(`${API}/api/auth/login`, form);
-      const { token, user } = res.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      setLoading(false);
-      navigate("/Home");
-    } catch (err) {
-      setLoading(false);
-      setError(err?.response?.data?.message || "Login failed");
+  e.preventDefault();
+  setError("");
+  setLoading(true);
+
+  try {
+    const res = await axios.post(`${API}/api/auth/login`, form);
+    const { token, user } = res.data;
+
+    // Save token + user
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    setLoading(false);
+
+    // Redirect by role
+    if (user.role === "Admin") {
+      navigate("/admin");
+    } else if (user.role === "Employer") {
+      navigate("/employer");
+    } else {
+      navigate("/candidate");
     }
-  };
+
+  } catch (err) {
+    setLoading(false);
+    setError(err?.response?.data?.message || "Login failed");
+  }
+};
+
 
   return (
     <div className="card">

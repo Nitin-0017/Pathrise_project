@@ -1,0 +1,79 @@
+/* Main container with sidebar layout */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* Right side content area */
+.applications-container {
+  flex: 1;
+  padding: 30px;
+}
+
+/* List of application cards */
+.applications-list {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+}
+
+/* Individual card */
+.application-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 22px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Card title */
+.application-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Status pill */
+.status-pill {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+}
+
+/* Status colors */
+.status-pending {
+  background: #f59e0b;
+}
+.status-accepted {
+  background: #10b981;
+}
+.status-rejected {
+  background: #ef4444;
+}
+
+/* Date text */
+.application-date {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .applications-container {
+    padding: 20px;
+  }
+
+  .applications-list {
+    grid-template-columns: 1fr;
+  }
+}

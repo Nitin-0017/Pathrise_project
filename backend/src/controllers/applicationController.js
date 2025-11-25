@@ -12,3 +12,13 @@ exports.getApplications = async (req, res) => {
   const apps = await Application.find().populate("job applicant");
   res.json(apps);
 };
+
+exports.getApplicationsByUser = async (req, res) => {
+  const userId = req.params.id;
+
+  const apps = await Application.find({ applicant: userId })
+    .populate("job applicant");
+
+  res.json(apps);
+};
+

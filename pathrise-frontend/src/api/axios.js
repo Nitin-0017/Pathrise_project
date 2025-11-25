@@ -10,4 +10,16 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+// Candidate applies to job
+export const applyToJob = (jobId) =>
+  API.post("/applications", { jobId });
+
+// Candidate gets their own applications
+export const getApplicationsByUser = (userId) =>
+  API.get(`/applications/user/${userId}`);
+
+// Employer/Admin gets all applications
+export const getAllApplications = () =>
+  API.get("/applications");
+
 export default API;

@@ -7,18 +7,25 @@ const requireAuth = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+
+    // Make sure id and role are strings
+    req.user = {
+      id: decoded.id.toString(),
+      role: decoded.role
+    };
+
     next();
-  } catch {
+  } catch (err) {
+    console.error(err);
     return res.status(401).json({ message: "Invalid token" });
   }
 };
 
 const requireRole = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role))
+    if (!req.user || !roles.includes(req.user.role)) {
       return res.status(403).json({ message: "Access denied" });
-
+    }
     next();
   };
 };

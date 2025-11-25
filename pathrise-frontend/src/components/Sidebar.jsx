@@ -14,6 +14,7 @@ export default function Sidebar({ user, activePage, onLogout }) {
   const navigate = useNavigate();
   const role = user.role;
 
+
   return (
     <aside className="sidebar">
       <h2 className="logo">Pathrise</h2>
@@ -53,6 +54,7 @@ export default function Sidebar({ user, activePage, onLogout }) {
             </button>
           </>
         )}
+
 
         {role === "Employer" && (
           <>

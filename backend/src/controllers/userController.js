@@ -1,0 +1,34 @@
+// controllers/userController.js
+const User = require("../models/userModel");
+
+// Get currently logged-in user profile
+exports.getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password"); // exclude password
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch user profile" });
+  }
+};
+
+// Update currently logged-in user profile
+exports.updateMe = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, email },
+      { new: true, runValidators: true, select: "-password" } // exclude password in response
+    );
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to update user profile" });
+  }
+};

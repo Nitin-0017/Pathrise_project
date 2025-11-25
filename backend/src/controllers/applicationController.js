@@ -15,23 +15,24 @@ exports.getApplications = async (req, res) => {
   res.json(apps);
 };
 
+
 exports.getApplicationsByUser = async (req, res) => {
   const userId = req.params.id;
   const apps = await Application.find({ applicant: userId }).populate("job applicant");
   res.json(apps);
 };
 
-// NEW: Employer can view applications only for their jobs
+
 exports.getApplicationsByEmployer = async (req, res) => {
   try {
-    // 1) Get jobs posted by this employer
+
     const jobs = await Job.find({ postedBy: req.user.id }).select("_id");
     const jobIds = jobs.map(job => job._id);
 
-    // 2) Get applications for these jobs
+
     const applications = await Application.find({ job: { $in: jobIds } })
       .populate("job", "title")
-      .populate("applicant", "name email phone"); // candidate info
+      .populate("applicant", "name email phone"); 
 
     res.json(applications);
   } catch (err) {

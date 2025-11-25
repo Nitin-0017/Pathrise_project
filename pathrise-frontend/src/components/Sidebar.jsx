@@ -55,7 +55,6 @@ export default function Sidebar({ user, activePage, onLogout }) {
           </>
         )}
 
-
         {role === "Employer" && (
           <>
             <button
@@ -68,6 +67,7 @@ export default function Sidebar({ user, activePage, onLogout }) {
               className={`menu-item ${activePage === "applications" ? "active" : ""}`}
               onClick={() => navigate("/employer/applications")}
             >
+              
               <FileText size={18} /> Applications
             </button>
             <button

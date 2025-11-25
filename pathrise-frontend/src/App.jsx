@@ -4,7 +4,10 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home/Home";
 import CandidateJobs from "./pages/Jobs/Jobs"; // Candidate jobs
 import EmployerJobs from "./pages/Employer/Jobs"; // Employer jobs
-import Applications from "./pages/Applications/Applications";
+import EmployerApplications from "./pages/Employer/EmployerApplications"; // Employer applications
+import Applications from "./pages/Applications/Applications"; // Candidate applications
+import CandidateSettings from "./pages/Candidate/CandidateSettings"; // Candidate settings
+import EmployerSettings from "./pages/Employer/EmployerSettings"; // Employer settings
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
@@ -42,6 +45,14 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/candidate/settings"
+        element={
+          <ProtectedRoute>
+            <CandidateSettings />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Employer */}
       <Route
@@ -64,7 +75,15 @@ export default function App() {
         path="/employer/applications"
         element={
           <ProtectedRoute>
-            <Applications />
+            <EmployerApplications />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/employer/settings"
+        element={
+          <ProtectedRoute>
+            <EmployerSettings />
           </ProtectedRoute>
         }
       />

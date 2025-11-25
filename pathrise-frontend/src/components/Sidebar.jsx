@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Briefcase,
-  MessageSquare,
   Settings,
   LogOut,
   Users,
@@ -46,6 +45,12 @@ export default function Sidebar({ user, activePage, onLogout }) {
             >
               <FileText size={18} /> My Applications
             </button>
+            <button
+              className={`menu-item ${activePage === "settings" ? "active" : ""}`}
+              onClick={() => navigate("/candidate/settings")}
+            >
+              <Settings size={18} /> Settings
+            </button>
           </>
         )}
 
@@ -62,6 +67,12 @@ export default function Sidebar({ user, activePage, onLogout }) {
               onClick={() => navigate("/employer/applications")}
             >
               <FileText size={18} /> Applications
+            </button>
+            <button
+              className={`menu-item ${activePage === "settings" ? "active" : ""}`}
+              onClick={() => navigate("/employer/settings")}
+            >
+              <Settings size={18} /> Settings
             </button>
           </>
         )}
@@ -88,13 +99,6 @@ export default function Sidebar({ user, activePage, onLogout }) {
             </button>
           </>
         )}
-
-        <button
-          className={`menu-item ${activePage === "settings" ? "active" : ""}`}
-          onClick={() => navigate(`/${role.toLowerCase()}/settings`)}
-        >
-          <Settings size={18} /> Settings
-        </button>
       </nav>
 
       <button className="logout-btn" onClick={onLogout}>

@@ -22,4 +22,10 @@ export const getApplicationsByUser = (userId) =>
 export const getAllApplications = () =>
   API.get("/applications");
 
+// NEW: Get current logged-in user profile
+export const getMyProfile = () => API.get("/users/me");
+
+// NEW: Update current logged-in user profile
+export const updateMyProfile = (data) => API.put("/users/me", data);
+
 export default API;

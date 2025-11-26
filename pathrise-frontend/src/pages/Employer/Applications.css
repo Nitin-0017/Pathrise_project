@@ -79,3 +79,37 @@ font-size: 18px;
 color: var(--muted, #6b7280);
 text-align: center;
 }
+.table td.actions {
+  display: flex;
+  gap: 8px; /* space between buttons */
+}
+
+.table td button.contact-btn {
+  background: var(--primary, #0a66c2);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.table td button.contact-btn:hover {
+  background: #084a9b;
+}
+
+.table td button.reject-btn {
+  background: #ef4444;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.table td button.reject-btn:hover {
+  background: #c1121f;
+}

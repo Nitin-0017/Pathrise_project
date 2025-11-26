@@ -1,10 +1,21 @@
+/* Login.css */
+
+.login-wrapper {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  min-height: 100vh;       /* full viewport height */
+  width: 100%;
+  background: #f3f2ef;     /* optional */
+}
+
 .card {
   width: 380px;
   background: #ffffff;
   padding: 32px 36px;
   border-radius: 14px;
   border: 1px solid #e6e6e6;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   animation: fadeIn 0.4s ease;
 }
 
@@ -13,32 +24,20 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-
 .form-title {
   font-size: 26px;
   font-weight: 700;
   color: #0a66c2;
   text-align: center;
+  margin-bottom: 8px;
 }
 
 .small-muted {
   text-align: center;
   font-size: 14px;
   color: #6b7280;
-  margin-top: 4px;
   margin-bottom: 20px;
 }
-
-.alert {
-  background: #fee2e2;
-  color: #b91c1c;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 15px;
-  border: 1px solid #fecaca;
-}
-
 
 .input {
   width: 100%;
@@ -57,7 +56,6 @@
   outline: none;
 }
 
-
 .btn {
   width: 100%;
   padding: 12px 14px;
@@ -68,7 +66,6 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 5px;
   box-shadow: 0 4px 14px rgba(10,102,194,0.25);
   transition: 0.2s;
 }
@@ -77,6 +74,15 @@
   background: #084c8f;
 }
 
+.alert {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  border: 1px solid #fecaca;
+}
 
 .link-row {
   margin-top: 18px;
@@ -93,11 +99,4 @@
 
 .link-row a:hover {
   text-decoration: underline;
-}
-
-@media (max-width: 480px) {
-  .card {
-    width: 90%;
-    padding: 28px 24px;
-  }
 }

@@ -1,21 +1,111 @@
-/* Main container with sidebar layout */
-.dashboard-container {
+/* ================= Sidebar ================= */
+.sidebar {
+  width: 260px;
+  background: #ffffff;
+  border-right: 1px solid #e6e9ef;
+  padding: 28px 22px;
   display: flex;
-  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed; /* fixed on left */
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0a66c2;
+  margin-bottom: 20px;
+}
+
+.profile {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e6e9ef;
+}
+
+.avatar {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 10px;
+  background: #0a66c2;
+  color: #fff;
+  font-size: 28px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.role {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.menu {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-item {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #1a1f2b;
+  transition: 0.2s;
+}
+
+.menu-item:hover {
+  background: rgba(10,102,194,0.08);
+}
+
+.menu-item.active {
+  background: rgba(10,102,194,0.15);
+  color: #0a66c2;
+}
+
+.logout-btn {
+  padding: 12px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ================= Main Content ================= */
+.dashboard-container {
   background: var(--bg);
+  min-height: 100vh;
+  padding-left: 300px; /* push content right of sidebar */
+  box-sizing: border-box;
 }
 
 /* Right side content area */
 .applications-container {
-  flex: 1;
-  padding: 30px;
+  padding: 10rem;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* List of application cards */
 .applications-list {
   margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 22px;
 }
 
@@ -60,6 +150,9 @@
 .status-rejected {
   background: #ef4444;
 }
+.status-interview {
+  background: #3b82f6;
+}
 
 /* Date text */
 .application-date {
@@ -67,7 +160,21 @@
   color: var(--muted);
 }
 
-/* Responsive */
+/* ================= Responsive ================= */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding-left: 0; /* remove sidebar offset on smaller screens */
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    padding-bottom: 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .applications-container {
     padding: 20px;

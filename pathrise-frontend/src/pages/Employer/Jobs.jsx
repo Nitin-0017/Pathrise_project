@@ -13,7 +13,7 @@ export default function EmployerJobs() {
     location: "",
     type: "",
     skills: "",
-    description: ""
+    description: "",
   });
   const [editingJobId, setEditingJobId] = useState(null);
 
@@ -41,7 +41,10 @@ export default function EmployerJobs() {
   const handleAddOrUpdateJob = async (e) => {
     e.preventDefault();
     try {
-      const payload = { ...form, skills: form.skills.split(",").map(s => s.trim()) };
+      const payload = {
+        ...form,
+        skills: form.skills.split(",").map((s) => s.trim()),
+      };
 
       if (editingJobId) {
         // Update job
@@ -53,7 +56,14 @@ export default function EmployerJobs() {
         alert("Job added successfully!");
       }
 
-      setForm({ title: "", company: "", location: "", type: "", skills: "", description: "" });
+      setForm({
+        title: "",
+        company: "",
+        location: "",
+        type: "",
+        skills: "",
+        description: "",
+      });
       setEditingJobId(null);
       fetchJobs();
     } catch (err) {
@@ -63,24 +73,22 @@ export default function EmployerJobs() {
   };
 
   const handleDelete = async (id) => {
-  if (!window.confirm("Are you sure you want to delete this job?")) return;
+    if (!window.confirm("Are you sure you want to delete this job?")) return;
 
-  try {
-    const token = localStorage.getItem("token"); // make sure you store token on login
-    await API.delete(`/jobs/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    alert("Job deleted!");
-    fetchJobs();
-  } catch (err) {
-    console.error(err);
-    alert(err?.response?.data?.message || "Failed to delete job");
-  }
-};
-
-
+    try {
+      const token = localStorage.getItem("token"); // make sure you store token on login
+      await API.delete(`/jobs/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("Job deleted!");
+      fetchJobs();
+    } catch (err) {
+      console.error(err);
+      alert(err?.response?.data?.message || "Failed to delete job");
+    }
+  };
 
   const handleEditClick = (job) => {
     setForm({
@@ -89,7 +97,7 @@ export default function EmployerJobs() {
       location: job.location,
       type: job.type,
       skills: job.skills.join(", "),
-      description: job.description
+      description: job.description,
     });
     setEditingJobId(job._id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -100,13 +108,13 @@ export default function EmployerJobs() {
   return (
     <div className="layout">
       {/* Sidebar */}
-      <Sidebar 
-        user={user} 
-        activePage="jobs" 
-        onLogout={() => { 
-          localStorage.removeItem("user"); 
-          window.location.href = "/login"; 
-        }} 
+      <Sidebar
+        user={user}
+        activePage="jobs"
+        onLogout={() => {
+          localStorage.removeItem("user");
+          window.location.href = "/login";
+        }}
       />
 
       {/* Main Content */}
@@ -116,19 +124,57 @@ export default function EmployerJobs() {
         {/* Centered Add/Edit Job Form */}
         <div className="job-form-container">
           <form className="job-form" onSubmit={handleAddOrUpdateJob}>
-            <input name="title" value={form.title} onChange={handleChange} placeholder="Job Title" required />
-            <input name="company" value={form.company} onChange={handleChange} placeholder="Company Name" required />
-            <input name="location" value={form.location} onChange={handleChange} placeholder="Location" required />
-            <input name="type" value={form.type} onChange={handleChange} placeholder="Full-time / Part-time" required />
-            <input name="skills" value={form.skills} onChange={handleChange} placeholder="Skills (comma separated)" />
-            <textarea name="description" value={form.description} onChange={handleChange} placeholder="Job Description" />
-            <button type="submit">{editingJobId ? "Update Job" : "Add Job"}</button>
+            <input
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              placeholder="Job Title"
+              required
+            />
+            <input
+              name="company"
+              value={form.company}
+              onChange={handleChange}
+              placeholder="Company Name"
+              required
+            />
+            <input
+              name="location"
+              value={form.location}
+              onChange={handleChange}
+              placeholder="Location"
+              required
+            />
+            <input
+              name="type"
+              value={form.type}
+              onChange={handleChange}
+              placeholder="Full-time / Part-time"
+              required
+            />
+            <input
+              name="skills"
+              value={form.skills}
+              onChange={handleChange}
+              placeholder="Skills (comma separated)"
+            />
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              placeholder="Job Description"
+            />
+            <button type="submit">
+              {editingJobId ? "Update Job" : "Add Job"}
+            </button>
           </form>
         </div>
 
         {/* Jobs Table */}
         {jobs.length === 0 ? (
-          <p style={{ textAlign: "center", marginTop: "30px" }}>No jobs posted yet.</p>
+          <p style={{ textAlign: "center", marginTop: "30px" }}>
+            No jobs posted yet.
+          </p>
         ) : (
           <table className="table">
             <thead>
@@ -148,8 +194,18 @@ export default function EmployerJobs() {
                   <td>{job.type}</td>
                   <td>{job.skills?.join(", ")}</td>
                   <td>
-                    <button onClick={() => handleEditClick(job)}>Edit</button>
-                    <button onClick={() => handleDelete(job._id)}>Delete</button>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEditClick(job)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(job._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

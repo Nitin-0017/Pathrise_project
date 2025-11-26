@@ -125,3 +125,40 @@ h2 {
   font-weight: bold;
   color: var(--primary, #0a66c2);
 }
+
+/* Buttons in table td sit side by side */
+.table td button {
+  display: inline-block;  /* make buttons inline */
+  margin-right: 8px;      /* spacing between buttons */
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* Last button should not have extra margin */
+.table td button:last-child {
+  margin-right: 0;
+}
+
+/* Specific colors */
+.table td button.edit-btn {
+  background: #0a66c2;
+  color: #fff;
+}
+
+.table td button.edit-btn:hover {
+  background: #084a9b;
+}
+
+.table td button.delete-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.table td button.delete-btn:hover {
+  background: #c1121f;
+}
+

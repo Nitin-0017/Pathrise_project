@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
   password: { type: String, required: true },
   role: { type: String, enum: ["Candidate", "Employer", "Admin"], default: "Candidate" },
+  interviewsScheduled: { type: Number, default: 0 } // <--- ADD THIS
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);

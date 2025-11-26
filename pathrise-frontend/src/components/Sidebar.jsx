@@ -14,7 +14,6 @@ export default function Sidebar({ user, activePage, onLogout }) {
   const navigate = useNavigate();
   const role = user.role;
 
-
   return (
     <aside className="sidebar">
       <h2 className="logo">Pathrise</h2>
@@ -25,9 +24,10 @@ export default function Sidebar({ user, activePage, onLogout }) {
       </div>
 
       <nav className="menu">
+        {/* Dashboard */}
         <button
           className={`menu-item ${activePage === "dashboard" ? "active" : ""}`}
-          onClick={() => navigate(`/${role.toLowerCase()}`)}
+          onClick={() => navigate(`/${role.toLowerCase()}/dashboard`)} // ✅ updated
         >
           <LayoutDashboard size={18} /> Dashboard
         </button>
@@ -67,7 +67,6 @@ export default function Sidebar({ user, activePage, onLogout }) {
               className={`menu-item ${activePage === "applications" ? "active" : ""}`}
               onClick={() => navigate("/employer/applications")}
             >
-              
               <FileText size={18} /> Applications
             </button>
             <button

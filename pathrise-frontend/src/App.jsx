@@ -2,12 +2,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home/Home";
-import CandidateJobs from "./pages/Jobs/Jobs"; // Candidate jobs
-import EmployerJobs from "./pages/Employer/Jobs"; // Employer jobs
-import EmployerApplications from "./pages/Employer/EmployerApplications"; // Employer applications
-import Applications from "./pages/Applications/Applications"; // Candidate applications
-import CandidateSettings from "./pages/Candidate/CandidateSettings"; // Candidate settings
-import EmployerSettings from "./pages/Employer/EmployerSettings"; // Employer settings
+import CandidateJobs from "./pages/Jobs/Jobs";
+import EmployerJobs from "./pages/Employer/Jobs";
+import EmployerApplications from "./pages/Employer/EmployerApplications";
+import Applications from "./pages/Applications/Applications";
+import CandidateSettings from "./pages/Candidate/CandidateSettings";
+import EmployerSettings from "./pages/Employer/EmployerSettings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
@@ -22,7 +22,7 @@ export default function App() {
 
       {/* Candidate */}
       <Route
-        path="/candidate"
+        path="/candidate/dashboard"
         element={
           <ProtectedRoute>
             <Home />
@@ -56,7 +56,7 @@ export default function App() {
 
       {/* Employer */}
       <Route
-        path="/employer"
+        path="/employer/dashboard"
         element={
           <ProtectedRoute>
             <Home />
@@ -90,7 +90,7 @@ export default function App() {
 
       {/* Admin */}
       <Route
-        path="/admin"
+        path="/admin/dashboard"
         element={
           <ProtectedRoute>
             <Home />

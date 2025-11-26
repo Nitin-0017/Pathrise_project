@@ -1,0 +1,108 @@
+.dashboard-wrapper {
+  display: block !important;  /* override centering from app.css */
+  height: 100%;
+  width: 100%;
+}
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f6f8fb;
+}
+
+.sidebar {
+  width: 260px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  border-right: 1px solid #e6e9ef;
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.dashboard-main {
+  margin-left: 260px;
+  padding: 30px;
+  padding-top: 50px;
+  width: calc(100% - 260px);
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1f2b;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  margin-bottom: 30px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.search-bar input:focus {
+  border-color: #0a66c2;
+  box-shadow: 0 0 8px rgba(10,102,194,0.3);
+}
+
+.stats-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 25px;
+  flex: 1 1 200px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.charts {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.chart-container {
+  background: #fff;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  .dashboard-main {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 20px;
+  }
+  .stats-cards {
+    flex-direction: column;
+  }
+}
+
+

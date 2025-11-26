@@ -3,10 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 
-
 const API = import.meta.env.VITE_BACKEND_URL;
-
-
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,35 +14,34 @@ export default function Login() {
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  try {
-    const res = await axios.post(`${API}/api/auth/login`, form);
-    const { token, user } = res.data;
+    try {
+      const res = await axios.post(`${API}/api/auth/login`, form);
+      const { token, user } = res.data;
 
-    // Save token + user
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+      // Save token + user
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-    setLoading(false);
+      setLoading(false);
 
-    // Redirect by role
-    if (user.role === "Admin") {
-      navigate("/admin");
-    } else if (user.role === "Employer") {
-      navigate("/employer");
-    } else {
-      navigate("/candidate");
+      // Redirect by role to dashboard
+      if (user.role === "Admin") {
+        navigate("/admin/dashboard");
+      } else if (user.role === "Employer") {
+        navigate("/employer/dashboard");
+      } else {
+        navigate("/candidate/dashboard");
+      }
+
+    } catch (err) {
+      setLoading(false);
+      setError(err?.response?.data?.message || "Login failed");
     }
-
-  } catch (err) {
-    setLoading(false);
-    setError(err?.response?.data?.message || "Login failed");
-  }
-};
-
+  };
 
   return (
     <div className="card">
@@ -55,9 +51,24 @@ export default function Login() {
       {error && <div className="alert">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-        <input className="input" name="email" placeholder="Email" value={form.email} onChange={onChange} />
-        <input className="input" type="password" name="password" placeholder="Password" value={form.password} onChange={onChange} />
-        <button className="btn" type="submit" disabled={loading}>{loading ? "Signing in..." : "Login"}</button>
+        <input
+          className="input"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={onChange}
+        />
+        <input
+          className="input"
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={onChange}
+        />
+        <button className="btn" type="submit" disabled={loading}>
+          {loading ? "Signing in..." : "Login"}
+        </button>
       </form>
 
       <div className="link-row">

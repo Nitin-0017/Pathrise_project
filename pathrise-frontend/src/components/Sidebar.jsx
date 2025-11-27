@@ -10,9 +10,14 @@ import {
 } from "lucide-react";
 import "./Sidebar.css";
 
-export default function Sidebar({ user, activePage, onLogout }) {
+export default function Sidebar({ user, activePage }) {
   const navigate = useNavigate();
   const role = user.role;
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <aside className="sidebar">
@@ -27,7 +32,7 @@ export default function Sidebar({ user, activePage, onLogout }) {
         {/* Dashboard */}
         <button
           className={`menu-item ${activePage === "dashboard" ? "active" : ""}`}
-          onClick={() => navigate(`/${role.toLowerCase()}/dashboard`)} // ✅ updated
+          onClick={() => navigate(`/${role.toLowerCase()}/dashboard`)}
         >
           <LayoutDashboard size={18} /> Dashboard
         </button>
@@ -102,7 +107,7 @@ export default function Sidebar({ user, activePage, onLogout }) {
         )}
       </nav>
 
-      <button className="logout-btn" onClick={onLogout}>
+      <button className="logout-btn" onClick={handleLogout}>
         <LogOut size={18} /> Logout
       </button>
     </aside>

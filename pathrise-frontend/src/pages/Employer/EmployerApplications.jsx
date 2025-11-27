@@ -23,7 +23,6 @@ export default function EmployerApplications() {
     }
   };
 
-  // Update application status
   const updateStatus = async (id, status) => {
     try {
       await API.patch(`/applications/${id}/status`, { status });
@@ -38,8 +37,8 @@ export default function EmployerApplications() {
 
   // Contact + mark Accepted
   const handleContact = (app) => {
-    updateStatus(app._id, "Accepted"); // mark accepted
-    window.location.href = `mailto:${app.applicant.email}`; // open email
+    updateStatus(app._id, "Accepted"); 
+    window.location.href = `mailto:${app.applicant.email}`; 
   };
 
   if (loading) return <div className="loading-screen">Loading...</div>;

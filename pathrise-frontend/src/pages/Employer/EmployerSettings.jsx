@@ -12,7 +12,7 @@ export default function EmployerSettings() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await getMyProfile(); // using API helper
+        const res = await getMyProfile(); 
         setUser(res.data);
         setForm({ name: res.data.name, email: res.data.email });
       } catch (err) {
@@ -31,7 +31,7 @@ export default function EmployerSettings() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await updateMyProfile(form); // using API helper
+      const res = await updateMyProfile(form); 
       setUser(res.data);
       alert("Profile updated successfully!");
     } catch (err) {

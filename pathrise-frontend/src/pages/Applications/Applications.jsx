@@ -37,7 +37,6 @@ export default function Applications() {
   const handleNavigate = (page) => {
     navigate(`/candidate/${page}`);
   };
-
   if (!user) return <div>Loading...</div>;
 
   return (
@@ -51,7 +50,6 @@ export default function Applications() {
           navigate("/login");
         }}
       />
-
       <div className="content-area">
         <h2>My Applications</h2>
 

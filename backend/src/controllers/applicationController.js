@@ -2,7 +2,6 @@ const Application = require("../models/applicationModel");
 const Job = require("../models/jobModel");
 const User = require("../models/userModel");
 
-// Candidate applies to job
 exports.applyToJob = async (req, res) => {
   const application = await Application.create({
     job: req.body.jobId,
@@ -11,20 +10,17 @@ exports.applyToJob = async (req, res) => {
   res.status(201).json({ message: "Application submitted", application });
 };
 
-// Get all applications
 exports.getApplications = async (req, res) => {
   const apps = await Application.find().populate("job applicant");
   res.json(apps);
 };
 
-// Get applications by candidate
 exports.getApplicationsByUser = async (req, res) => {
   const userId = req.params.id;
   const apps = await Application.find({ applicant: userId }).populate("job applicant");
   res.json(apps);
 };
 
-// Get applications for employer's jobs
 exports.getApplicationsByEmployer = async (req, res) => {
   try {
     const jobs = await Job.find({ postedBy: req.user.id }).select("_id");
@@ -41,7 +37,6 @@ exports.getApplicationsByEmployer = async (req, res) => {
   }
 };
 
-// Delete application
 exports.deleteApplication = async (req, res) => {
   try {
     const applicationId = req.params.id;
@@ -51,7 +46,6 @@ exports.deleteApplication = async (req, res) => {
     if (application.job.postedBy.toString() !== req.user.id) {
       return res.status(403).json({ message: "Not authorized to delete this application" });
     }
-
     await Application.findByIdAndDelete(applicationId);
     res.json({ message: "Application deleted successfully" });
   } catch (err) {
@@ -60,7 +54,6 @@ exports.deleteApplication = async (req, res) => {
   }
 };
 
-// Update Application Status
 exports.updateApplicationStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -81,7 +74,6 @@ exports.updateApplicationStatus = async (req, res) => {
     application.status = status;
     await application.save();
 
-    // Increment interviewsScheduled if Accepted
     if (status === "Accepted") {
       const candidate = await User.findById(application.applicant);
       if (candidate) {

@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import "./EmployerDashboard.css";
-import { getDashboardData } from "../../api/axios";   // ⭐ NEW
+import { getDashboardData } from "../../api/axios";  
 
 export default function EmployerDashboard({ user }) {
   const [stats, setStats] = useState({
@@ -100,6 +100,7 @@ export default function EmployerDashboard({ user }) {
                 </LineChart>
               </ResponsiveContainer>
             </div>
+
 
             <div className="chart-container">
               <h3>Applications Per Job</h3>

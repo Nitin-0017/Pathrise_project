@@ -11,16 +11,13 @@ const signup = async (req, res) => {
       return res.status(400).json({ message: "Please provide name, email and password." });
     }
 
-
     if (!email.includes("@")) {
       return res.status(400).json({ message: "Please enter a valid email address." });
     }
 
-
     if (password.length < 6) {
       return res.status(400).json({ message: "Password must be at least 6 characters long." });
     }
-
 
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "User already exists with this email." });

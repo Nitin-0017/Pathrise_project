@@ -8,7 +8,6 @@ const requireAuth = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Make sure id and role are strings
     req.user = {
       id: decoded.id.toString(),
       role: decoded.role

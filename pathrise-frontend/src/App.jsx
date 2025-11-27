@@ -16,11 +16,9 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
 
-      {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 
-      {/* Candidate */}
       <Route
         path="/candidate/dashboard"
         element={
@@ -54,7 +52,6 @@ export default function App() {
         }
       />
 
-      {/* Employer */}
       <Route
         path="/employer/dashboard"
         element={
@@ -88,17 +85,6 @@ export default function App() {
         }
       />
 
-      {/* Admin */}
-      <Route
-        path="/admin/dashboard"
-        element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Catch All */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

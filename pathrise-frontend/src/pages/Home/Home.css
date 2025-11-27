@@ -9,14 +9,12 @@
   --shadow: 0 4px 15px rgba(0,0,0,0.07);
 }
 
-/* Layout */
 .layout {
   display: flex;
   min-height: 100vh;
   background: var(--bg);
 }
 
-/* Sidebar */
 .sidebar {
   width: 260px;
   background: #ffffff;
@@ -101,14 +99,12 @@
   cursor: pointer;
 }
 
-/* Main */
 .main {
   margin-left: 260px;
   padding: 30px;
   width: calc(100% - 260px);
 }
 
-/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -142,7 +138,6 @@
   border: 1px solid var(--border);
 }
 
-/* Greeting */
 .heading h1 {
   font-size: 28px;
   margin: 0;
@@ -152,7 +147,6 @@
   color: var(--muted);
 }
 
-/* Cards */
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -180,7 +174,6 @@
   margin-top: 10px;
 }
 
-/* Charts */
 .charts {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -195,7 +188,6 @@
   box-shadow: var(--shadow);
 }
 
-/* Table */
 .table-area {
   margin-top: 30px;
 }
@@ -230,7 +222,6 @@
   color: #ef4444;
 }
 
-/* Loading */
 .loading-screen {
   display: flex;
   justify-content: center;

@@ -10,26 +10,23 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Candidate applies to job
 export const applyToJob = (jobId) =>
   API.post("/applications", { jobId });
 
-// Candidate gets their own applications
 export const getApplicationsByUser = (userId) =>
   API.get(`/applications/user/${userId}`);
 
-// Employer/Admin gets all applications
 export const getAllApplications = () =>
   API.get("/applications");
 
-// NEW: Get current logged-in user profile
 export const getMyProfile = () => API.get("/users/me");
 
-// NEW: Update current logged-in user profile
 export const updateMyProfile = (data) => API.put("/users/me", data);
 
 export const getDashboardData = () => API.get("/dashboard");
 
 export const getCandidateDashboardData = () => API.get("/candidate");
+
+export const getJobs = () => API.get("/jobs");
 
 export default API;

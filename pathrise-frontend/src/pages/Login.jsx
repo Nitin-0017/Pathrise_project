@@ -28,7 +28,6 @@ export default function Login() {
 
       setLoading(false);
 
-      // Redirect by role to dashboard
       if (user.role === "Admin") {
         navigate("/admin/dashboard");
       } else if (user.role === "Employer") {

@@ -1,5 +1,5 @@
 .dashboard-wrapper {
-  display: block !important;  /* override centering from app.css */
+  display: block !important;  
   height: 100%;
   width: 100%;
 }

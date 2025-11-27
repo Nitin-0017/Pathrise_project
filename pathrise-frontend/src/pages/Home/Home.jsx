@@ -24,6 +24,5 @@ export default function Home() {
   if (user.role === "Candidate") return <CandidateDashboard user={user} />;
   if (user.role === "Employer") return <EmployerDashboard user={user} />;
 
-
   return <div>Role not recognized</div>;
 }

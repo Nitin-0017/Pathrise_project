@@ -23,7 +23,6 @@ export default function JobListing() {
     fetchApplications();
   }, []);
 
-  // Fetch all jobs
   const fetchJobs = async () => {
     try {
       const res = await API.get("/jobs");
@@ -35,10 +34,9 @@ export default function JobListing() {
     }
   };
 
-  // Fetch candidate's applications
   const fetchApplications = async () => {
     try {
-      const res = await API.get("/applications"); // candidate only
+      const res = await API.get("/applications"); 
       const userApps = res.data.filter(app => app.applicant._id === JSON.parse(localStorage.getItem("user")).id);
       setApplications(userApps);
     } catch (err) {
@@ -46,12 +44,11 @@ export default function JobListing() {
     }
   };
 
-  // Apply to a job
   const applyJob = async (jobId) => {
     try {
       await API.post("/applications", { jobId });
       alert("Application submitted!");
-      fetchApplications(); // update table
+      fetchApplications(); 
     } catch (err) {
       console.error(err);
       alert(err?.response?.data?.message || "Failed to apply");

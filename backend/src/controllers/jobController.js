@@ -1,14 +1,11 @@
 const Job = require("../models/jobModel");
 
-// GET ALL JOBS
 exports.getJobs = async (req, res) => {
   try {
     let jobs;
     if (req.user.role === "Employer") {
-      // Sirf logged-in employer ke jobs fetch karo
       jobs = await Job.find({ postedBy: req.user.id });
     } else {
-      // Candidate/Admin sab jobs dekh sakte hain
       jobs = await Job.find();
     }
 
@@ -19,7 +16,6 @@ exports.getJobs = async (req, res) => {
   }
 };
 
-// CREATE NEW JOB
 exports.createJob = async (req, res) => {
   try {
     const job = await Job.create({ ...req.body, postedBy: req.user.id });
@@ -30,13 +26,11 @@ exports.createJob = async (req, res) => {
   }
 };
 
-// UPDATE JOB
 exports.updateJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
     if (!job) return res.status(404).json({ message: "Job not found" });
 
-    // Employers can only update their own jobs
     if (req.user.role === "Employer" && job.postedBy.toString() !== req.user.id) {
       return res.status(403).json({ message: "Not authorized to update this job" });
     }
@@ -49,13 +43,11 @@ exports.updateJob = async (req, res) => {
   }
 };
 
-// DELETE JOB
 exports.deleteJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
     if (!job) return res.status(404).json({ message: "Job not found" });
 
-    // Only Employer who posted it or Admin can delete
     if (req.user.role === "Employer" && job.postedBy.toString() !== req.user.id) {
       return res.status(403).json({ message: "Access denied: Not your job" });
     }

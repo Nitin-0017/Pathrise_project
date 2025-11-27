@@ -1,4 +1,4 @@
-// src/pages/Employer/Jobs.jsx
+
 import React, { useEffect, useState } from "react";
 import API from "../../api/axios"; // axios instance
 import Sidebar from "../../components/Sidebar";
@@ -17,8 +17,7 @@ export default function EmployerJobs() {
   });
   const [editingJobId, setEditingJobId] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user")); // Employer info
-
+  const user = JSON.parse(localStorage.getItem("user")); 
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -47,11 +46,9 @@ export default function EmployerJobs() {
       };
 
       if (editingJobId) {
-        // Update job
         await API.put(`/jobs/${editingJobId}`, payload);
         alert("Job updated successfully!");
       } else {
-        // Add new job
         await API.post("/jobs", payload);
         alert("Job added successfully!");
       }
@@ -76,7 +73,7 @@ export default function EmployerJobs() {
     if (!window.confirm("Are you sure you want to delete this job?")) return;
 
     try {
-      const token = localStorage.getItem("token"); // make sure you store token on login
+      const token = localStorage.getItem("token");
       await API.delete(`/jobs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -107,7 +104,6 @@ export default function EmployerJobs() {
 
   return (
     <div className="layout">
-      {/* Sidebar */}
       <Sidebar
         user={user}
         activePage="jobs"
@@ -117,11 +113,9 @@ export default function EmployerJobs() {
         }}
       />
 
-      {/* Main Content */}
       <main className="main">
         <h2>{editingJobId ? "Edit Job" : "Add New Job"}</h2>
 
-        {/* Centered Add/Edit Job Form */}
         <div className="job-form-container">
           <form className="job-form" onSubmit={handleAddOrUpdateJob}>
             <input
@@ -170,7 +164,6 @@ export default function EmployerJobs() {
           </form>
         </div>
 
-        {/* Jobs Table */}
         {jobs.length === 0 ? (
           <p style={{ textAlign: "center", marginTop: "30px" }}>
             No jobs posted yet.

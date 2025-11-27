@@ -9,14 +9,13 @@
   --shadow: 0 4px 15px rgba(0,0,0,0.07);
 }
 
-/* Layout */
+
 .layout {
   display: flex;
   min-height: 100vh;
   background: var(--bg);
 }
 
-/* Sidebar */
 .sidebar {
   width: 260px;
   background: var(--card);
@@ -94,7 +93,6 @@
   color: var(--primary);
 }
 
-/* Logout */
 .logout-btn {
   padding: 12px;
   background: #ef4444;
@@ -104,7 +102,6 @@
   cursor: pointer;
 }
 
-/* Main content */
 .main {
   flex: 1;
   padding: 30px;
@@ -114,14 +111,12 @@
   width: calc(100% - 260px);
 }
 
-/* Page heading */
 .main h2 {
   font-size: 24px;
   margin-bottom: 20px;
   color: var(--text);
 }
 
-/* Jobs list (FLEX layout) */
 .jobs-list {
   display: flex;
   flex-wrap: wrap;
@@ -131,7 +126,6 @@
   align-items: stretch;
 }
 
-/* Job Card */
 .job-card {
   width: 280px;
   background: var(--card);
@@ -162,7 +156,6 @@
   color: var(--text);
 }
 
-/* Button */
 .btn-apply {
   margin-top: 10px;
   padding: 10px;
@@ -179,7 +172,6 @@
   background: #084c8f;
 }
 
-/* Loading Screen */
 .loading-screen {
   display: flex;
   justify-content: center;
@@ -190,7 +182,6 @@
   color: var(--primary);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .sidebar {
     width: 220px;

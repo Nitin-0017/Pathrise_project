@@ -1,4 +1,4 @@
-// src/pages/Jobs/Jobs.jsx
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
@@ -45,7 +45,6 @@ export default function Jobs() {
     }
   };
 
-  // ⭐ Updated navigation (same as Applications.jsx)
   const handleNavigate = (page) => {
     if (page === "dashboard") navigate("/candidate");
     else navigate(`/candidate/${page}`);

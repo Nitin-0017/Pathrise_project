@@ -2,7 +2,6 @@ const Job = require("../models/jobModel");
 const Application = require("../models/applicationModel");
 const User = require("../models/userModel");
 
-// ---------------------- Employer Dashboard ----------------------
 exports.getDashboardData = async (req, res) => {
   try {
     const employerId = req.user.id;
@@ -62,7 +61,6 @@ exports.getDashboardData = async (req, res) => {
   }
 };
 
-// ---------------------- Candidate Dashboard ----------------------
 exports.getCandidateDashboardData = async (req, res) => {
   try {
     const candidateId = req.user.id;
@@ -95,7 +93,7 @@ exports.getCandidateDashboardData = async (req, res) => {
     ]);
 
     const applicationsOverTime = applicationsOverTimeAgg.map((a) => ({
-      date: a._id, // already properly formatted
+      date: a._id, 
       applications: Number(a.applications) || 0,
     }));
 

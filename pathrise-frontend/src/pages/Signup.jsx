@@ -54,6 +54,7 @@ export default function Signup() {
         <button className="btn" type="submit" disabled={loading}>{loading ? "Signing up..." : "Create account"}</button>
       </form>
 
+
       <div className="link-row">
         Already have an account? <Link to="/login">Login</Link>
       </div>

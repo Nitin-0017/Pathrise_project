@@ -1,8 +1,6 @@
-// src/seed.js
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
-
 const User = require("./models/userModel");
 const Job = require("./models/jobModel");
 const Application = require("./models/applicationModel");
@@ -14,14 +12,11 @@ const seedDatabase = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB connected");
 
-    // Clear existing data
     await User.deleteMany();
     await Job.deleteMany();
     await Application.deleteMany();
 
     const hashedPassword = await bcrypt.hash("password123", 10);
-
-    // ----- USERS -----
 
 const users = await User.insertMany([
   // Employers
@@ -41,11 +36,8 @@ const users = await User.insertMany([
   { name: "Laura White", email: "laura.white@gmail.com", password: hashedPassword, role: "Candidate" },
 ]);
 
-
-    // Destructure for easy reference
     const [employer1, employer2, employer3, employer4, candidate1, candidate2, candidate3, candidate4, candidate5, candidate6, candidate7, candidate8] = users;
 
-    // ----- JOBS (8 per employer) -----
     const jobTemplates = [
       { title: "Frontend Developer", description: "Build amazing UI components.", type: "Full-time", location: "Remote", salary: 80000, skills: ["React", "CSS", "JavaScript"] },
       { title: "Backend Developer", description: "Handle server-side logic and databases.", type: "Full-time", location: "Remote", salary: 90000, skills: ["Node.js", "Express", "MongoDB"] },
@@ -66,7 +58,6 @@ const users = await User.insertMany([
       }
     }
 
-    // ----- APPLICATIONS (15 per employer) -----
     for (const emp of [employer1, employer2, employer3, employer4]) {
       const empJobs = allJobs.filter(j => j.employer.toString() === emp._id.toString()).map(j => j.job);
 

@@ -28,9 +28,7 @@ export default function EmployerApplications() {
     try {
       await API.patch(`/applications/${id}/status`, { status });
       setApplications((prev) =>
-        prev.map((app) =>
-          app._id === id ? { ...app, status } : app
-        )
+        prev.map((app) => (app._id === id ? { ...app, status } : app))
       );
     } catch (err) {
       console.error(err);
@@ -77,10 +75,11 @@ export default function EmployerApplications() {
             <tbody>
               {applications.map((app) => (
                 <tr key={app._id}>
-                  <td>{app.applicant.name}</td>
-                  <td>{app.applicant.email}</td>
-                  <td>{app.applicant.phone || "N/A"}</td>
-                  <td>{app.job.title}</td>
+                  <td>{app?.applicant?.name || "No Name"}</td>
+                  <td>{app?.applicant?.email || "No Email"}</td>
+                  <td>{app?.applicant?.phone || "N/A"}</td>
+                  <td>{app?.job?.title || "Unknown Job"}</td>
+
                   <td>
                     <span
                       className={`status-pill status-${app.status

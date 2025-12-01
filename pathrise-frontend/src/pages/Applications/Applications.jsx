@@ -27,7 +27,6 @@ export default function Applications() {
   const fetchApplications = async (userId) => {
     try {
       const res = await API.get(`/applications/user/${userId}`);
-      console.log("data",res.data)
       setApplications(res.data);
     } catch (err) {
       console.error("Error fetching apps:", err);
@@ -37,6 +36,7 @@ export default function Applications() {
   const handleNavigate = (page) => {
     navigate(`/candidate/${page}`);
   };
+
   if (!user) return <div>Loading...</div>;
 
   return (
@@ -60,7 +60,15 @@ export default function Applications() {
             applications.map((app) => (
               <div className="application-card" key={app._id}>
                 <h3>{app?.job?.title || "Job deleted"}</h3>
-                <p>Status: {app.status}</p>
+
+                {/* Status Capsule + Text */}
+                <div className="status-row">
+                  <div
+                    className={`status-pill status-${app.status.toLowerCase()}`}
+                  ></div>
+                  <span className="status-text">{app.status}</span>
+                </div>
+
                 <p>Applied on: {new Date(app.createdAt).toDateString()}</p>
               </div>
             ))

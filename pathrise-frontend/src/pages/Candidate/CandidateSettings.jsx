@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import API, { getMyProfile, updateMyProfile } from "../../api/axios";
+import { getMyProfile, updateMyProfile, changePassword } from "../../api/axios";
 import "../Settings.css";
 
 export default function CandidateSettings() {
@@ -8,6 +8,11 @@ export default function CandidateSettings() {
   const [form, setForm] = useState({ name: "", email: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+
+  // For password modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
+  const [passwordSaving, setPasswordSaving] = useState(false);
 
   useEffect(() => {
     async function fetchUser() {
@@ -24,7 +29,6 @@ export default function CandidateSettings() {
     fetchUser();
   }, []);
 
-  
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -32,14 +36,47 @@ export default function CandidateSettings() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await updateMyProfile(form);
+      const payload = { name: form.name, email: form.email };
+      const res = await updateMyProfile(payload);
       setUser(res.data);
       alert("Profile updated successfully!");
     } catch (err) {
       console.error(err);
-      alert("Error updating profile");
+      alert(err?.response?.data?.message || "Error updating profile");
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Password modal handlers
+  const handlePasswordChange = (e) => {
+    setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value });
+  };
+
+  const handlePasswordSave = async () => {
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      alert("New password and confirm password do not match");
+      return;
+    }
+    if (!passwordForm.currentPassword || !passwordForm.newPassword) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    setPasswordSaving(true);
+    try {
+      await changePassword({
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword,
+      });
+      alert("Password changed successfully!");
+      setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert(err?.response?.data?.message || "Failed to change password");
+    } finally {
+      setPasswordSaving(false);
     }
   };
 
@@ -59,6 +96,7 @@ export default function CandidateSettings() {
             <p className="role">{user?.role || "Role"}</p>
           </div>
 
+          {/* Name */}
           <div className="setting-item">
             <label>Name</label>
             <input
@@ -69,6 +107,7 @@ export default function CandidateSettings() {
             />
           </div>
 
+          {/* Email */}
           <div className="setting-item">
             <label>Email</label>
             <input
@@ -82,6 +121,60 @@ export default function CandidateSettings() {
           <button onClick={handleSave} disabled={saving}>
             {saving ? "Saving..." : "Save Changes"}
           </button>
+
+          {/* Change Password Button */}
+          <button 
+            style={{ marginTop: "15px", backgroundColor: "#ef4444" }} 
+            onClick={() => setIsModalOpen(true)}
+          >
+            Change Password
+          </button>
+
+          {/* Password Modal */}
+          {isModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal">
+                <h3>Change Password</h3>
+
+                <div className="setting-item">
+                  <label>Current Password</label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    value={passwordForm.currentPassword}
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+
+                <div className="setting-item">
+                  <label>New Password</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={passwordForm.newPassword}
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+
+                <div className="setting-item">
+                  <label>Confirm New Password</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={passwordForm.confirmPassword}
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+
+                <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+                  <button onClick={handlePasswordSave} disabled={passwordSaving}>
+                    {passwordSaving ? "Saving..." : "Save"}
+                  </button>
+                  <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

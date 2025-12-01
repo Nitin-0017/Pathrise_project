@@ -21,7 +21,7 @@ color: var(--text, #1a1f2b);
 text-align: center;
 }
 
-/* Applications Table */
+
 .table {
 width: 100%;
 max-width: 900px;
@@ -111,4 +111,31 @@ text-align: center;
 
 .table td button.reject-btn:hover {
   background: #c1121f;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #e6e9ef);
+  background: var(--card, #fff);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.pagination button:hover {
+  background: var(--primary, #0a66c2);
+  color: #fff;
+}
+
+.pagination button.active-page {
+  background: var(--primary, #0a66c2);
+  color: #fff;
+  font-weight: bold;
+  border: none;
 }

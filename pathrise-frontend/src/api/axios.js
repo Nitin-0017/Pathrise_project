@@ -27,6 +27,7 @@ export const getDashboardData = () => API.get("/dashboard");
 
 export const getCandidateDashboardData = () => API.get("/candidate");
 
-export const getJobs = () => API.get("/jobs");
+export const changePassword = (data) => API.post("/users/change-password", data);
+
 
 export default API;

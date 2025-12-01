@@ -9,107 +9,22 @@
   --shadow: 0 4px 15px rgba(0,0,0,0.07);
 }
 
-
 .layout {
   display: flex;
-  min-height: 100vh;
+  min-height: 100%;
   background: var(--bg);
+  flex-wrap: wrap;
 }
 
-.sidebar {
-  width: 260px;
-  background: var(--card);
-  border-right: 1px solid var(--border);
-  padding: 28px 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: fixed;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--primary);
-  margin-bottom: 20px;
-}
-
-.profile {
-  text-align: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.avatar {
-  width: 75px;
-  height: 75px;
-  margin: 0 auto 10px;
-  background: var(--primary);
-  color: #fff;
-  font-size: 28px;
-  font-weight: bold;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.role {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.menu {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.menu-item {
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  font-size: 15px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: var(--text);
-  transition: 0.2s;
-}
-
-.menu-item:hover {
-  background: rgba(10,102,194,0.08);
-}
-
-.menu-item.active {
-  background: rgba(10,102,194,0.15);
-  color: var(--primary);
-}
-
-.logout-btn {
-  padding: 12px;
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
 
 .main {
   flex: 1;
-  padding: 30px;
-  min-height: 100vh;
+  padding: 30px 20px; 
   background: var(--bg);
-  margin-left: 260px;
-  width: calc(100% - 260px);
+  margin-left: 90px;
 }
+
+
 
 .main h2 {
   font-size: 24px;
@@ -117,17 +32,38 @@
   color: var(--text);
 }
 
-.jobs-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 22px;
-  margin-top: 20px;
-  justify-content: flex-start;
-  align-items: stretch;
+/* Search bar */
+.job-search-bar {
+  width: 100%;
+  margin-bottom: 20px;
 }
 
+.job-search-bar input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.job-search-bar input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 5px rgba(10,102,194,0.3);
+}
+
+/* Jobs List: Grid layout */
+.jobs-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+
+/* Job Card */
 .job-card {
-  width: 280px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -136,7 +72,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .job-card:hover {
@@ -145,7 +81,7 @@
 }
 
 .job-card h3 {
-  margin: 0;
+  margin: 0 0 8px;
   font-size: 18px;
   color: var(--primary);
 }
@@ -156,6 +92,7 @@
   color: var(--text);
 }
 
+/* Apply Button */
 .btn-apply {
   margin-top: 10px;
   padding: 10px;
@@ -172,6 +109,7 @@
   background: #084c8f;
 }
 
+/* Loading Screen */
 .loading-screen {
   display: flex;
   justify-content: center;
@@ -182,6 +120,7 @@
   color: var(--primary);
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .sidebar {
     width: 220px;
@@ -190,10 +129,42 @@
   .main {
     margin-left: 0;
     padding: 20px;
-    width: 100%;
   }
 
   .jobs-list {
-    justify-content: center;
+    grid-template-columns: 1fr;
   }
 }
+
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.page-btn:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.page-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+

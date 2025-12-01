@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { getMe, updateMe } = require("../controllers/userController");
+const { getMe, updateMe, changePassword } = require("../controllers/userController");
 const { requireAuth } = require("../middleware/authMiddleware"); 
 
 router.get("/me", requireAuth, getMe);
 router.put("/me", requireAuth, updateMe);
+
+// ✅ Naya route for password change
+router.post("/change-password", requireAuth, changePassword);
 
 module.exports = router;

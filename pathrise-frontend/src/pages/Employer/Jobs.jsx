@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from "react";
-import API from "../../api/axios"; // axios instance
 import Sidebar from "../../components/Sidebar";
+import API from "../../api/axios";
 import "./Jobs.css";
 
 export default function EmployerJobs() {
@@ -16,8 +15,10 @@ export default function EmployerJobs() {
     description: "",
   });
   const [editingJobId, setEditingJobId] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("user")); 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -53,6 +54,7 @@ export default function EmployerJobs() {
         alert("Job added successfully!");
       }
 
+      // Reset form and state
       setForm({
         title: "",
         company: "",
@@ -62,6 +64,7 @@ export default function EmployerJobs() {
         description: "",
       });
       setEditingJobId(null);
+      setShowForm(false);
       fetchJobs();
     } catch (err) {
       console.error(err);
@@ -97,6 +100,7 @@ export default function EmployerJobs() {
       description: job.description,
     });
     setEditingJobId(job._id);
+    setShowForm(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -114,56 +118,85 @@ export default function EmployerJobs() {
       />
 
       <main className="main">
-        <h2>{editingJobId ? "Edit Job" : "Add New Job"}</h2>
+        {/* Add Job Button */}
+        {!showForm && !editingJobId && (
+          <button className="btn-add-job" onClick={() => setShowForm(true)}>
+            Add Job
+          </button>
+        )}
 
-        <div className="job-form-container">
-          <form className="job-form" onSubmit={handleAddOrUpdateJob}>
-            <input
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-              placeholder="Job Title"
-              required
-            />
-            <input
-              name="company"
-              value={form.company}
-              onChange={handleChange}
-              placeholder="Company Name"
-              required
-            />
-            <input
-              name="location"
-              value={form.location}
-              onChange={handleChange}
-              placeholder="Location"
-              required
-            />
-            <input
-              name="type"
-              value={form.type}
-              onChange={handleChange}
-              placeholder="Full-time / Part-time"
-              required
-            />
-            <input
-              name="skills"
-              value={form.skills}
-              onChange={handleChange}
-              placeholder="Skills (comma separated)"
-            />
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Job Description"
-            />
-            <button type="submit">
-              {editingJobId ? "Update Job" : "Add Job"}
-            </button>
-          </form>
-        </div>
+        {/* Job Form */}
+        {showForm && (
+          <div className="job-form-container">
+            <h2>{editingJobId ? "Edit Job" : "Add New Job"}</h2>
+            <form className="job-form" onSubmit={handleAddOrUpdateJob}>
+              <input
+                name="title"
+                value={form.title}
+                onChange={handleChange}
+                placeholder="Job Title"
+                required
+              />
+              <input
+                name="company"
+                value={form.company}
+                onChange={handleChange}
+                placeholder="Company Name"
+                required
+              />
+              <input
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+                placeholder="Location"
+                required
+              />
+              <input
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                placeholder="Full-time / Part-time"
+                required
+              />
+              <input
+                name="skills"
+                value={form.skills}
+                onChange={handleChange}
+                placeholder="Skills (comma separated)"
+              />
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                placeholder="Job Description"
+              />
+              <div className="form-buttons">
+                <button type="submit">
+                  {editingJobId ? "Update Job" : "Add Job"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowForm(false);
+                    setEditingJobId(null);
+                    setForm({
+                      title: "",
+                      company: "",
+                      location: "",
+                      type: "",
+                      skills: "",
+                      description: "",
+                    });
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
+        {/* Jobs Table */}
         {jobs.length === 0 ? (
           <p style={{ textAlign: "center", marginTop: "30px" }}>
             No jobs posted yet.

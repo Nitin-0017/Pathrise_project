@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import "./CandidateDashboard.css";
-import { getCandidateDashboardData, getJobs } from "../../api/axios"; // ✅ getJobs API
+import API, { getCandidateDashboardData } from "../../api/axios";
+
+// React Icons
+import { FiBriefcase, FiFileText, FiClock, FiActivity } from "react-icons/fi";
+import { MdOutlinePendingActions } from "react-icons/md";
+import { RiChatHistoryLine } from "react-icons/ri";
 
 export default function CandidateDashboard({ user }) {
   const [stats, setStats] = useState({
@@ -12,61 +17,70 @@ export default function CandidateDashboard({ user }) {
   });
 
   const [loading, setLoading] = useState(true);
-  const [jobsView, setJobsView] = useState(false); // toggle jobs view
-  const [jobs, setJobs] = useState([]); // all jobs
-  const [searchQuery, setSearchQuery] = useState(""); // search input
-  const [filteredJobs, setFilteredJobs] = useState([]);
+
+  // ACTIVITY FEED STATE
+  const [activities, setActivities] = useState([]);
+  const [feedLoading, setFeedLoading] = useState(true);
+  const [feedError, setFeedError] = useState(null);
 
   const navigate = useNavigate();
 
-  // Fetch dashboard stats
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
       const res = await getCandidateDashboardData();
-      const stats = res.data.stats;
-      setStats(stats);
+      setStats(res.data.stats);
     } catch (err) {
-      console.error("Candidate Dashboard Error:", err);
+      console.error("Dashboard Error:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch jobs when Browse Jobs clicked
-  const fetchJobs = async () => {
+  const fetchActivityFeed = async () => {
+    setFeedLoading(true);
+    setFeedError(null);
     try {
-      const res = await getJobs(); // API should return list of jobs
-      setJobs(res.data.jobs);
-      setFilteredJobs(res.data.jobs);
+      const res = await API.get("/candidate/activity");
+      let feed = res.data.feed || res.data || [];
+
+      // 💥 FIX: Remove unwanted backend messages like “complete your profile”
+      feed = feed.filter(
+        (item) =>
+          item.message &&
+          !item.message.toLowerCase().includes("complete your profile")
+      );
+
+      setActivities(Array.isArray(feed) ? feed : []);
     } catch (err) {
-      console.error("Error fetching jobs:", err);
+      console.error("Feed Error:", err);
+      setFeedError("Unable to load activity feed.");
+    } finally {
+      setFeedLoading(false);
     }
   };
 
-  // Filter jobs on search
-  useEffect(() => {
-    if (searchQuery === "") {
-      setFilteredJobs(jobs);
-    } else {
-      setFilteredJobs(
-        jobs.filter((job) =>
-          job.title.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    }
-  }, [searchQuery, jobs]);
+  const timeAgo = (date) => {
+    const diff = (Date.now() - new Date(date)) / 1000;
+    if (diff < 60) return `${Math.floor(diff)}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return `${Math.floor(diff / 86400)}d ago`;
+  };
 
   useEffect(() => {
     fetchDashboardData();
+    fetchActivityFeed();
   }, []);
 
   if (loading) {
     return (
       <div className="dashboard-wrapper">
-        <Sidebar user={user} activePage="dashboard" />
-        <div className="dashboard-main">
-          <h1 className="dashboard-title">Loading Dashboard...</h1>
+        <div className="dashboard-layout">
+          <Sidebar user={user} activePage="dashboard" />
+          <div className="dashboard-main">
+            <h1 className="dashboard-title">Loading your dashboard...</h1>
+          </div>
         </div>
       </div>
     );
@@ -78,96 +92,77 @@ export default function CandidateDashboard({ user }) {
         <Sidebar user={user} activePage="dashboard" />
 
         <main className="dashboard-main">
-          {/* Header with Browse Jobs Button */}
           <div className="dashboard-header">
             <h1 className="dashboard-title">Candidate Dashboard</h1>
-            <button
-              className="browse-jobs-btn"
-              onClick={() => {
-                setJobsView(true);
-                fetchJobs();
-              }}
-            >
-              Browse Jobs
-            </button>
           </div>
 
-          {/* Conditional Search Bar + Job List */}
-          {jobsView && (
-            <>
-              <div className="search-bar">
-                <input
-                  type="text"
-                  placeholder="Search jobs..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+          {/* ==================== STATS ====================== */}
+          <div className="stats-cards">
+            <div className="card cool-card">
+              <div className="card-icon">
+                <FiFileText size={26} />
               </div>
+              <h3>Total Applications</h3>
+              <p>{stats.totalApplications}</p>
+            </div>
 
-              <div className="job-list">
-                {filteredJobs.length === 0 ? (
-                  <p>No jobs found</p>
-                ) : (
-                  filteredJobs.map((job) => (
-                    <div key={job._id} className="job-card">
-                      <h3>{job.title}</h3>
-                      <p>{job.company}</p>
-                      <p>{job.location}</p>
+            <div className="card cool-card">
+              <div className="card-icon">
+                <FiBriefcase size={26} />
+              </div>
+              <h3>Jobs Applied</h3>
+              <p>{stats.jobsApplied}</p>
+            </div>
+
+            <div className="card cool-card">
+              <div className="card-icon orange">
+                <MdOutlinePendingActions size={26} />
+              </div>
+              <h3>Interviews</h3>
+              <p>{stats.interviewsScheduled}</p>
+            </div>
+          </div>
+
+          {/* ============== ACTIVITY FEED ================== */}
+          <div className="activity-feed">
+            <h2 className="activity-heading">
+              <RiChatHistoryLine size={22} style={{ marginRight: 8 }} />
+              Recent Activity
+            </h2>
+
+            {feedLoading && <p>Loading activity...</p>}
+            {feedError && <p className="feed-error">{feedError}</p>}
+
+            <div className="feed-cards">
+              {!feedLoading &&
+                activities.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`feed-card ${item.type?.toLowerCase()}`}
+                  >
+                    {/* ICON BASED ON TYPE */}
+                    <div className="feed-icon">
+                      {item.type === "Application" && <FiFileText size={22} />}
+                      {item.type === "Interview" && <FiClock size={22} />}
+                      {item.type === "Review" && <FiActivity size={22} />}
                     </div>
-                  ))
-                )}
-              </div>
-            </>
-          )}
 
-          {/* Dashboard stats + activity feed when not in jobs view */}
-          {!jobsView && (
-            <>
-              {/* Stats Cards */}
-              <div className="stats-cards">
-                <div className="card">
-                  <h3>Total Applications</h3>
-                  <p>{stats.totalApplications}</p>
-                </div>
-                <div className="card">
-                  <h3>Jobs Applied</h3>
-                  <p>{stats.jobsApplied}</p>
-                </div>
-                <div className="card">
-                  <h3>Interviews Scheduled</h3>
-                  <p>{stats.interviewsScheduled}</p>
-                </div>
-              </div>
+                    <div className="feed-body">
+                      <p className="feed-message">
+                        <strong>{item.type}:</strong> {item.message}
+                      </p>
+                      <span className="feed-meta">
+                        {timeAgo(item.createdAt)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
 
-              {/* Activity Feed */}
-              <div className="activity-feed">
-                <h2>Recent Activity & Reviews</h2>
-                <div className="feed-cards">
-                  <div className="feed-card">
-                    <p>
-                      <strong>Application:</strong> Applied to Frontend
-                      Developer at XYZ Corp
-                    </p>
-                    <span>2 days ago</span>
-                  </div>
-                  <div className="feed-card">
-                    <p>
-                      <strong>Interview:</strong> Scheduled for Backend
-                      Developer at ABC Inc
-                    </p>
-                    <span>5 days ago</span>
-                  </div>
-                  <div className="feed-card">
-                    <p>
-                      <strong>Review:</strong> Your profile is 85% complete. Add
-                      more skills to improve visibility.
-                    </p>
-                    <span>1 week ago</span>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+              {!feedLoading && activities.length === 0 && (
+                <p className="no-activity">No recent activity.</p>
+              )}
+            </div>
+          </div>
         </main>
       </div>
     </div>

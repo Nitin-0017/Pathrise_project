@@ -16,7 +16,9 @@ exports.createOrUpdateProfile = async (req, res) => {
     const profileData = { ...req.body, user: req.user.id };
 
     if (req.file) {
-      profileData.resume = `/uploads/resumes/${req.file.filename}`;
+      // Full URL generate karna
+      const filePath = `${req.protocol}://${req.get("host")}/uploads/resumes/${req.file.filename}`;
+      profileData.resume = filePath;
     }
 
     const profile = await CandidateProfile.findOneAndUpdate(
@@ -31,3 +33,4 @@ exports.createOrUpdateProfile = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+

@@ -209,7 +209,7 @@ export default function EmployerApplications() {
                 <strong>Resume:</strong>{" "}
                 {selectedApp?.applicant?.candidateProfile?.resume ? (
                   <a
-                    href={selectedApp.applicant.candidateProfile.resume}
+                    href={`http://localhost:3000${selectedApp.applicant.candidateProfile.resume}`}
                     target="_blank"
                     rel="noreferrer"
                   >

@@ -10,6 +10,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const activityRoutes = require("./routes/activityRoutes");
 const candidateProfileRoutes = require("./routes/candidateProfileRoutes");
 const employerRoutes = require("./routes/employerRoutes");
+const linkProfiles = require("../linkCandidateProfiles");
 
 dotenv.config();
 const app = express();
@@ -19,7 +20,11 @@ app.use(cors());
 
 app.use("/uploads", express.static("uploads"));
 
-connectDB();
+
+connectDB().then(async () => {
+  console.log("MongoDB connected");
+  await linkProfiles();
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);

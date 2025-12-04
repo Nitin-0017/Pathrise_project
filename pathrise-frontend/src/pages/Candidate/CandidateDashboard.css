@@ -12,27 +12,11 @@
 /* BACKGROUND MAGIC */
 .dashboard-wrapper {
   background: linear-gradient(135deg, #d8eaff, #ece4ff, #ffe3f4);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 32px;
   position: relative;
-  overflow: hidden;
 }
 
-/* glowing balls */
-.dashboard-wrapper::before,
-.dashboard-wrapper::after {
-  content: "";
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.6;
-  z-index: -1;
-}
+
 .dashboard-wrapper::before {
   left: -180px;
   top: -150px;

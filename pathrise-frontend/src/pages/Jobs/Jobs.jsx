@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import API from "../../api/axios";
@@ -8,13 +8,15 @@ export default function Jobs() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [jobs, setJobs] = useState([]);
-  const [filteredJobs, setFilteredJobs] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Pagination states
+  // Pagination & search states
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 9;
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const perPage = 9;
+  const debounceRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,43 +28,49 @@ export default function Jobs() {
     }
 
     setUser(JSON.parse(storedUser));
-    fetchJobs();
   }, []);
 
+  // Fetch jobs from backend
   const fetchJobs = async () => {
+    setLoading(true);
     try {
-      const res = await API.get("/jobs");
-      setJobs(res.data);
-      setFilteredJobs(res.data); // default job list
-      setLoading(false);
+      const params = {
+        page: currentPage,
+        limit: perPage,
+      };
+      if (searchQuery.trim() !== "") params.search = searchQuery.trim();
+
+      const res = await API.get("/jobs", { params });
+      const payload = res.data || {};
+
+      setJobs(payload.jobs || []);
+      setTotalPages(payload.totalPages || 1);
     } catch (err) {
       console.error(err);
+      setJobs([]);
+      setTotalPages(1);
+    } finally {
       setLoading(false);
     }
   };
 
+  // Fetch on mount and page change
   useEffect(() => {
-    const q = searchQuery.toLowerCase();
+    fetchJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
-    const results = jobs.filter((job) => {
-      const title = job.title ? job.title.toLowerCase() : "";
-      const company = job.company ? job.company.toLowerCase() : "";
-      const location = job.location ? job.location.toLowerCase() : "";
-      const skills = Array.isArray(job.skills)
-        ? job.skills.join(" ").toLowerCase()
-        : "";
+  // Debounced search
+  useEffect(() => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setCurrentPage(1);
+      fetchJobs();
+    }, 400);
 
-      return (
-        title.includes(q) ||
-        company.includes(q) ||
-        location.includes(q) ||
-        skills.includes(q)
-      );
-    });
-
-    setFilteredJobs(results);
-    setCurrentPage(1); // reset page on search
-  }, [searchQuery, jobs]);
+    return () => clearTimeout(debounceRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   const applyJob = async (jobId) => {
     try {
@@ -74,30 +82,19 @@ export default function Jobs() {
     }
   };
 
-  const handleNavigate = (page) => {
-    if (page === "dashboard") navigate("/candidate");
-    else navigate(`/candidate/${page}`);
-  };
-
-  // Pagination calculation
-  const indexOfLastJob = currentPage * jobsPerPage;
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
-  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
-
   const handlePageChange = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!user) return <div className="loading-screen">Loading...</div>;
+  if (!user || loading) return <div className="loading-screen">Loading...</div>;
 
   return (
     <div className="layout">
       <Sidebar
         user={user}
         activePage="jobs"
-        onNavigate={handleNavigate}
         onLogout={() => {
           localStorage.clear();
           navigate("/login");
@@ -107,7 +104,7 @@ export default function Jobs() {
       <main className="main">
         <h2>Available Jobs</h2>
 
-        {/* 🔍 Search Bar */}
+        {/* Search Bar */}
         <div className="job-search-bar">
           <input
             type="text"
@@ -117,14 +114,12 @@ export default function Jobs() {
           />
         </div>
 
-        {loading ? (
-          <p>Loading jobs...</p>
-        ) : filteredJobs.length === 0 ? (
-          <p>No jobs match your search.</p>
+        {jobs.length === 0 ? (
+          <p>No jobs found.</p>
         ) : (
           <>
             <div className="jobs-list">
-              {currentJobs.map((job) => (
+              {jobs.map((job) => (
                 <div className="job-card" key={job._id}>
                   <h3>{job.title}</h3>
                   <p><strong>Company:</strong> {job.company}</p>
@@ -145,6 +140,10 @@ export default function Jobs() {
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="pagination">
+                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage <= 1}>
+                  Prev
+                </button>
+
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
                   <button
                     key={num}
@@ -154,6 +153,10 @@ export default function Jobs() {
                     {num}
                   </button>
                 ))}
+
+                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage >= totalPages}>
+                  Next
+                </button>
               </div>
             )}
           </>

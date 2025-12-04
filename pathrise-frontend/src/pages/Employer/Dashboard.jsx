@@ -22,7 +22,6 @@ export default function EmployerDashboard({ user }) {
 
   const [applicationsOverTime, setApplicationsOverTime] = useState([]);
   const [applicationsPerJob, setApplicationsPerJob] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,15 +57,6 @@ export default function EmployerDashboard({ user }) {
         <main className="dashboard-main">
           <h1 className="dashboard-title">Employer Dashboard</h1>
 
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search jobs, candidates..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
           <div className="stats-cards">
             <div className="card">
               <h3>Total Jobs</h3>
@@ -100,7 +90,6 @@ export default function EmployerDashboard({ user }) {
                 </LineChart>
               </ResponsiveContainer>
             </div>
-
 
             <div className="chart-container">
               <h3>Applications Per Job</h3>

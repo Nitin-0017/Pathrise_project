@@ -1,82 +1,136 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import { getMyProfile, updateMyProfile, changePassword } from "../../api/axios";
-import "../Settings.css";
+import {
+  getMyProfile,
+  getCandidateProfile,
+  updateCandidateProfile,
+  changePassword,
+} from "../../api/axios";
+
+import "./CandidateSettings.css";
 
 export default function CandidateSettings() {
   const [user, setUser] = useState(null);
-  const [form, setForm] = useState({ name: "", email: "" });
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    age: "",
+    gender: "",
+    phone: "",
+    address: "",
+    skills: [],
+    resume: null,
+  });
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
-  // For password modal
+  const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [passwordForm, setPasswordForm] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
-  const [passwordSaving, setPasswordSaving] = useState(false);
+
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchData() {
       try {
-        const res = await getMyProfile();
-        setUser(res.data);
-        setForm({ name: res.data.name, email: res.data.email });
+        const userRes = await getMyProfile();
+        setUser(userRes.data);
+
+        const profileRes = await getCandidateProfile();
+        let skillsData = profileRes.data?.skills || [];
+
+        // Ensure skills are always an array
+        if (!Array.isArray(skillsData)) {
+          try {
+            skillsData = JSON.parse(skillsData);
+          } catch {
+            skillsData = [];
+          }
+        }
+
+        setProfile({
+          name: userRes.data?.name || "",
+          email: userRes.data?.email || "",
+          age: profileRes.data?.age || "",
+          gender: profileRes.data?.gender || "",
+          phone: profileRes.data?.phone || "",
+          address: profileRes.data?.address || "",
+          skills: skillsData,
+          resume: profileRes.data?.resume || null,
+        });
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     }
-    fetchUser();
+    fetchData();
   }, []);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleProfileChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === "resume") {
+      setProfile({ ...profile, resume: files[0] });
+    } else if (name === "skills") {
+      setProfile({ ...profile, skills: value.split(",").map((s) => s.trim()) });
+    } else {
+      setProfile({ ...profile, [name]: value });
+    }
   };
 
-  const handleSave = async () => {
+  const handleSaveProfile = async () => {
     setSaving(true);
     try {
-      const payload = { name: form.name, email: form.email };
-      const res = await updateMyProfile(payload);
-      setUser(res.data);
-      alert("Profile updated successfully!");
+      const formData = new FormData();
+      formData.append("age", profile.age);
+      formData.append("gender", profile.gender);
+      formData.append("phone", profile.phone);
+      formData.append("address", profile.address);
+
+      // FIX: append skills as array, not stringify
+      profile.skills.forEach((skill) => {
+        formData.append("skills[]", skill);
+      });
+
+      if (profile.resume instanceof File) {
+        formData.append("resume", profile.resume);
+      }
+
+      await updateCandidateProfile(formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      alert("Profile Updated!");
+      setIsEditing(false);
     } catch (err) {
       console.error(err);
-      alert(err?.response?.data?.message || "Error updating profile");
+      alert("Failed to update profile");
     } finally {
       setSaving(false);
     }
   };
 
-  // Password modal handlers
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e) =>
     setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value });
-  };
 
   const handlePasswordSave = async () => {
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      alert("New password and confirm password do not match");
-      return;
-    }
-    if (!passwordForm.currentPassword || !passwordForm.newPassword) {
-      alert("Please fill all fields");
-      return;
-    }
+    if (passwordForm.newPassword !== passwordForm.confirmPassword)
+      return alert("Passwords do not match!");
 
-    setPasswordSaving(true);
     try {
       await changePassword({
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
       });
-      alert("Password changed successfully!");
-      setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+
+      alert("Password Updated!");
       setIsModalOpen(false);
     } catch (err) {
-      console.error(err);
       alert(err?.response?.data?.message || "Failed to change password");
-    } finally {
-      setPasswordSaving(false);
     }
   };
 
@@ -84,98 +138,100 @@ export default function CandidateSettings() {
 
   return (
     <div className="layout">
-      <Sidebar user={user} activePage="settings" onLogout={() => window.location.reload()} />
+      <Sidebar user={user} activePage="settings" />
+
       <main className="main">
-        <h2>Profile Settings</h2>
-        <div className="settings-container">
-          <div className="profile-section">
-            <div className="avatar-large">
-              {user?.name ? user.name[0].toUpperCase() : "U"}
+        <h2>Profile</h2>
+
+        {!isEditing ? (
+          <div className="profile-card">
+            <div className="profile-avatar">{profile.name?.charAt(0)}</div>
+
+            <p><strong>Name:</strong> {profile.name}</p>
+            <p><strong>Email:</strong> {profile.email}</p>
+            <p><strong>Age:</strong> {profile.age}</p>
+            <p><strong>Gender:</strong> {profile.gender}</p>
+            <p><strong>Phone:</strong> {profile.phone}</p>
+            <p><strong>Address:</strong> {profile.address}</p>
+
+            <p>
+              <strong>Skills:</strong>{" "}
+              {profile.skills.length ? profile.skills.join(", ") : "Not added"}
+            </p>
+
+            {profile.resume && <p><strong>Resume:</strong> Uploaded</p>}
+
+            <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+            <button style={{ marginTop: "10px", backgroundColor: "#ef4444" }} onClick={() => setIsModalOpen(true)}>
+              Change Password
+            </button>
+          </div>
+        ) : (
+          <div className="settings-container">
+
+            <div className="setting-item">
+              <label>Age</label>
+              <input type="number" name="age" value={profile.age} onChange={handleProfileChange} />
             </div>
-            <h3>{user?.name || "User"}</h3>
-            <p className="role">{user?.role || "Role"}</p>
-          </div>
 
-          {/* Name */}
-          <div className="setting-item">
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* Email */}
-          <div className="setting-item">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-            />
-          </div>
-
-          <button onClick={handleSave} disabled={saving}>
-            {saving ? "Saving..." : "Save Changes"}
-          </button>
-
-          {/* Change Password Button */}
-          <button 
-            style={{ marginTop: "15px", backgroundColor: "#ef4444" }} 
-            onClick={() => setIsModalOpen(true)}
-          >
-            Change Password
-          </button>
-
-          {/* Password Modal */}
-          {isModalOpen && (
-            <div className="modal-overlay">
-              <div className="modal">
-                <h3>Change Password</h3>
-
-                <div className="setting-item">
-                  <label>Current Password</label>
-                  <input
-                    type="password"
-                    name="currentPassword"
-                    value={passwordForm.currentPassword}
-                    onChange={handlePasswordChange}
-                  />
-                </div>
-
-                <div className="setting-item">
-                  <label>New Password</label>
-                  <input
-                    type="password"
-                    name="newPassword"
-                    value={passwordForm.newPassword}
-                    onChange={handlePasswordChange}
-                  />
-                </div>
-
-                <div className="setting-item">
-                  <label>Confirm New Password</label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={passwordForm.confirmPassword}
-                    onChange={handlePasswordChange}
-                  />
-                </div>
-
-                <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-                  <button onClick={handlePasswordSave} disabled={passwordSaving}>
-                    {passwordSaving ? "Saving..." : "Save"}
-                  </button>
-                  <button onClick={() => setIsModalOpen(false)}>Cancel</button>
-                </div>
-              </div>
+            <div className="setting-item">
+              <label>Gender</label>
+              <select name="gender" value={profile.gender} onChange={handleProfileChange}>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
-          )}
-        </div>
+
+            <div className="setting-item">
+              <label>Phone</label>
+              <input type="text" name="phone" value={profile.phone} onChange={handleProfileChange} />
+            </div>
+
+            <div className="setting-item">
+              <label>Address</label>
+              <textarea name="address" value={profile.address} onChange={handleProfileChange}></textarea>
+            </div>
+
+            <div className="setting-item">
+              <label>Skills (comma separated)</label>
+              <input
+                type="text"
+                name="skills"
+                value={profile.skills.join(", ")}
+                onChange={handleProfileChange}
+              />
+            </div>
+
+            <div className="setting-item">
+              <label>Resume (PDF/DOCX)</label>
+              <input type="file" name="resume" onChange={handleProfileChange} />
+            </div>
+
+            <button onClick={handleSaveProfile} disabled={saving}>
+              {saving ? "Saving..." : "Save Profile"}
+            </button>
+
+            <button style={{ marginTop: "10px" }} onClick={() => setIsEditing(false)}>
+              Cancel
+            </button>
+          </div>
+        )}
+
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h3>Change Password</h3>
+              <input type="password" name="currentPassword" placeholder="Current Password" onChange={handlePasswordChange} />
+              <input type="password" name="newPassword" placeholder="New Password" onChange={handlePasswordChange} />
+              <input type="password" name="confirmPassword" placeholder="Confirm New Password" onChange={handlePasswordChange} />
+
+              <button onClick={handlePasswordSave}>Save</button>
+              <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

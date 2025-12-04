@@ -179,3 +179,22 @@
     padding: 18px;
   }
 }
+.cancel-btn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  margin-top: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #d9363e;
+}
+
+.status-cancelled {
+  background: gray !important;
+}

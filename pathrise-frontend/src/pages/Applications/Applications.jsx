@@ -33,6 +33,22 @@ export default function Applications() {
     }
   };
 
+  // ---- Cancel Application Handler ----
+  const handleCancel = async (appId) => {
+    if (!window.confirm("Are you sure you want to cancel this application?")) return;
+
+    try {
+      await API.patch(`/applications/${appId}/cancel`);
+      setApplications((prev) =>
+        prev.map((item) =>
+          item._id === appId ? { ...item, status: "Cancelled" } : item
+        )
+      );
+    } catch (err) {
+      console.error("Cancel failed:", err);
+    }
+  };
+
   const handleNavigate = (page) => {
     navigate(`/candidate/${page}`);
   };
@@ -50,6 +66,7 @@ export default function Applications() {
           navigate("/login");
         }}
       />
+
       <div className="content-area">
         <h2>My Applications</h2>
 
@@ -61,7 +78,6 @@ export default function Applications() {
               <div className="application-card" key={app._id}>
                 <h3>{app?.job?.title || "Job deleted"}</h3>
 
-                {/* Status Capsule + Text */}
                 <div className="status-row">
                   <div
                     className={`status-pill status-${app.status.toLowerCase()}`}
@@ -70,6 +86,16 @@ export default function Applications() {
                 </div>
 
                 <p>Applied on: {new Date(app.createdAt).toDateString()}</p>
+
+                {/* Cancel Button */}
+                {app.status !== "Cancelled" && (
+                  <button
+                    className="cancel-btn"
+                    onClick={() => handleCancel(app._id)}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
             ))
           )}

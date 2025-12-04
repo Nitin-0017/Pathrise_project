@@ -2,19 +2,47 @@ const Job = require("../models/jobModel");
 
 exports.getJobs = async (req, res) => {
   try {
-    let jobs;
+    const search = req.query.search || "";
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 9;
+    const skip = (page - 1) * limit;
+
+    let filters = {};
+
+    // Employer must only see their posted jobs
     if (req.user.role === "Employer") {
-      jobs = await Job.find({ postedBy: req.user.id });
-    } else {
-      jobs = await Job.find();
+      filters.postedBy = req.user.id;
     }
 
-    res.json(jobs);
+    // Search filter
+    if (search.trim() !== "") {
+      filters.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { company: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+        { skills: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const totalJobs = await Job.countDocuments(filters);
+
+    const jobs = await Job.find(filters)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    res.json({
+      jobs,
+      totalJobs,
+      currentPage: page,
+      totalPages: Math.ceil(totalJobs / limit),
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to fetch jobs" });
   }
 };
+
 
 exports.createJob = async (req, res) => {
   try {

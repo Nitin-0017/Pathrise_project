@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import "../App.css";
+import "./Login.css";
 
 const API = import.meta.env.VITE_BACKEND_URL;
 
@@ -22,7 +22,6 @@ export default function Login() {
       const res = await axios.post(`${API}/api/auth/login`, form);
       const { token, user } = res.data;
 
-      // Save token + user
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
@@ -43,35 +42,37 @@ export default function Login() {
   };
 
   return (
-    <div className="card">
-      <div className="form-title">Login to Pathrise</div>
-      <div className="small-muted">Use your account to continue</div>
+    <div className="login-wrapper">
+      <div className="card">
+        <div className="form-title">Login to Pathrise</div>
+        <div className="small-muted">Use your account to continue</div>
 
-      {error && <div className="alert">{error}</div>}
+        {error && <div className="alert">{error}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          className="input"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={onChange}
-        />
-        <input
-          className="input"
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={onChange}
-        />
-        <button className="btn" type="submit" disabled={loading}>
-          {loading ? "Signing in..." : "Login"}
-        </button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <input
+            className="input"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={onChange}
+          />
+          <input
+            className="input"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={onChange}
+          />
+          <button className="btn" type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Login"}
+          </button>
+        </form>
 
-      <div className="link-row">
-        Don't have an account? <Link to="/signup">Sign up</Link>
+        <div className="link-row">
+          Don't have an account? <Link to="/signup">Sign up</Link>
+        </div>
       </div>
     </div>
   );

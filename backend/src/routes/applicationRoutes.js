@@ -10,6 +10,8 @@ const {
   updateApplicationStatus
 } = require("../controllers/applicationController");
 
+const { cancelApplication } = require("../controllers/applicationController");
+
 router.post("/", requireAuth, requireRole("Candidate"), applyToJob);
 
 router.get("/user/:id", requireAuth, requireRole("Candidate"), getApplicationsByUser);
@@ -21,5 +23,7 @@ router.get("/employer", requireAuth, requireRole("Employer"), getApplicationsByE
 router.delete("/:id", requireAuth, requireRole("Employer"), deleteApplication);
 
 router.patch("/:id/status", requireAuth, requireRole("Employer"), updateApplicationStatus);
+
+router.patch("/:id/cancel", requireAuth, requireRole("Candidate"), cancelApplication);
 
 module.exports = router;

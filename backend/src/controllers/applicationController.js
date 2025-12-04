@@ -23,19 +23,45 @@ exports.getApplicationsByUser = async (req, res) => {
 
 exports.getApplicationsByEmployer = async (req, res) => {
   try {
+    const { page = 1, limit = 10, search = "", status } = req.query;
+
     const jobs = await Job.find({ postedBy: req.user.id }).select("_id");
     const jobIds = jobs.map(job => job._id);
 
-    const applications = await Application.find({ job: { $in: jobIds } })
-      .populate("job", "title postedBy")
-      .populate("applicant", "name email phone");
+    const query = { job: { $in: jobIds } };
 
-    res.json(applications);
+    if (status) query.status = status;
+
+    // Fix Search
+    if (search) {
+      const applicants = await User.find({
+        name: { $regex: search, $options: "i" }
+      }).select("_id");
+
+      const applicantIds = applicants.map(a => a._id);
+      query.applicant = { $in: applicantIds };
+    }
+
+    const totalApplications = await Application.countDocuments(query);
+
+    const applications = await Application.find(query)
+      .populate("job", "title postedBy")
+      .populate("applicant", "name email phone resume")
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    res.json({
+      applications,
+      totalPages: Math.ceil(totalApplications / limit)
+    });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to fetch applications" });
   }
 };
+
+
 
 exports.deleteApplication = async (req, res) => {
   try {
@@ -141,5 +167,27 @@ exports.getCandidateActivityFeed = async (req, res) => {
   } catch (err) {
     console.error("Feed Error:", err);
     res.status(500).json({ message: "Failed to fetch activity feed" });
+  }
+};
+
+exports.cancelApplication = async (req, res) => {
+  try {
+    const applicationId = req.params.id;
+    const application = await Application.findById(applicationId);
+
+    if (!application) return res.status(404).json({ message: "Application not found" });
+
+    if (application.applicant.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized to cancel this application" });
+    }
+
+    application.status = "Cancelled";
+    await application.save();
+
+    res.json({ message: "Application cancelled", application });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to cancel application" });
   }
 };

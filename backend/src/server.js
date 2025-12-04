@@ -8,12 +8,15 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const userRoutes = require("./routes/userRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes"); 
 const activityRoutes = require("./routes/activityRoutes");
+const candidateProfileRoutes = require("./routes/candidateProfileRoutes");
 
 dotenv.config();
 const app = express();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cors());
+
+app.use("/uploads", express.static("uploads"));
 
 connectDB();
 
@@ -23,6 +26,7 @@ app.use("/api/applications", applicationRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api", dashboardRoutes); 
 app.use("/api", activityRoutes);
+app.use("/api/candidate", candidateProfileRoutes);
 
 app.get("/", (req, res) => {
   res.send("Pathrise backend is running 🚀");

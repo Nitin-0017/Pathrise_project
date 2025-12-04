@@ -19,6 +19,10 @@ export const getApplicationsByUser = (userId) =>
 export const getAllApplications = () =>
   API.get("/applications");
 
+export const cancelApplication = (appId) =>
+  API.patch(`/applications/${appId}/cancel`);
+
+
 export const getMyProfile = () => API.get("/users/me");
 
 export const updateMyProfile = (data) => API.put("/users/me", data);
@@ -28,6 +32,10 @@ export const getDashboardData = () => API.get("/dashboard");
 export const getCandidateDashboardData = () => API.get("/candidate");
 
 export const changePassword = (data) => API.post("/users/change-password", data);
+
+export const getCandidateProfile = () => API.get("/candidate/profile");
+export const updateCandidateProfile = (data) =>
+  API.post("/candidate/profile", data);
 
 
 export default API;

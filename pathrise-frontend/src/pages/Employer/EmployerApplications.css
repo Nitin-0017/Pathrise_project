@@ -295,6 +295,7 @@ h2 {
 
 .filters .search-wrapper {
   width:40rem;
+
 }
 
 .filters input[type="text"] {
@@ -339,4 +340,9 @@ h2 {
   .filters select {
     width: 100%;
   }
+}
+.view-btn{
+  background: rgb(109, 109, 223);
+  padding:0.3rem 1rem;
+  border-radius: 6px;
 }

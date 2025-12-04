@@ -206,7 +206,7 @@ export default function EmployerJobs() {
                       <td>{job.location}</td>
                       <td>{job.type}</td>
                       <td>{Array.isArray(job.skills) ? job.skills.join(", ") : (job.skills || "")}</td>
-                      <td>
+                      <td className="btns">
                         <button className="edit-btn" onClick={() => handleEditClick(job)}>Edit</button>
                         <button className="delete-btn" onClick={() => handleDelete(job._id)}>Delete</button>
                       </td>

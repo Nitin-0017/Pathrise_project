@@ -93,7 +93,7 @@ export default function CandidateDashboard({ user }) {
 
         <main className="dashboard-main">
           <div className="dashboard-header">
-            <h1 className="dashboard-title">Candidate Dashboard</h1>
+            <h1 className="dashboard-title" style={{color:"black"}} >Candidate Dashboard</h1>
           </div>
 
           {/* ==================== STATS ====================== */}

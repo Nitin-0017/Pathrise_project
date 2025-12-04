@@ -10,7 +10,6 @@ export default function Jobs() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Pagination & search states
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,16 +27,12 @@ export default function Jobs() {
     }
 
     setUser(JSON.parse(storedUser));
-  }, []);
+  }, [navigate]);
 
-  // Fetch jobs from backend
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      const params = {
-        page: currentPage,
-        limit: perPage,
-      };
+      const params = { page: currentPage, limit: perPage };
       if (searchQuery.trim() !== "") params.search = searchQuery.trim();
 
       const res = await API.get("/jobs", { params });
@@ -54,13 +49,11 @@ export default function Jobs() {
     }
   };
 
-  // Fetch on mount and page change
   useEffect(() => {
     fetchJobs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
-  // Debounced search
   useEffect(() => {
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -69,7 +62,6 @@ export default function Jobs() {
     }, 400);
 
     return () => clearTimeout(debounceRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   const applyJob = async (jobId) => {
@@ -88,80 +80,89 @@ export default function Jobs() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!user || loading) return <div className="loading-screen">Loading...</div>;
+  if (!user || loading)
+    return <div className="loading-screen">Loading jobs...</div>;
 
   return (
-    <div className="layout">
-      <Sidebar
-        user={user}
-        activePage="jobs"
-        onLogout={() => {
-          localStorage.clear();
-          navigate("/login");
-        }}
-      />
+    <div className="dashboard-wrapper">
+      <div className="dashboard-layout">
+        <Sidebar
+          user={user}
+          activePage="jobs"
+          onLogout={() => {
+            localStorage.clear();
+            navigate("/login");
+          }}
+        />
 
-      <main className="main">
-        <h2>Available Jobs</h2>
+        <main className="dashboard-main">
+          <h1 className="dashboard-title" style={{color:"black"}}>Available Jobs</h1>
 
-        {/* Search Bar */}
-        <div className="job-search-bar">
-          <input
-            type="text"
-            placeholder="Search jobs by title, company, location, skills..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+          <div className="job-search-bar">
+            <input
+              type="text"
+              placeholder="Search jobs by title, company, location, skills..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
 
-        {jobs.length === 0 ? (
-          <p>No jobs found.</p>
-        ) : (
-          <>
-            <div className="jobs-list">
-              {jobs.map((job) => (
-                <div className="job-card" key={job._id}>
-                  <h3>{job.title}</h3>
-                  <p><strong>Company:</strong> {job.company}</p>
-                  <p><strong>Location:</strong> {job.location}</p>
-                  <p><strong>Type:</strong> {job.type}</p>
-                  <p><strong>Skills:</strong> {job.skills?.join(", ") || "N/A"}</p>
+          {jobs.length === 0 ? (
+            <p>No jobs found.</p>
+          ) : (
+            <>
+              <div className="jobs-list">
+                {jobs.map((job) => (
+                  <div className="job-card" key={job._id}>
+                    <h3>{job.title}</h3>
+                    <p><strong>Company:</strong> {job.company}</p>
+                    <p><strong>Location:</strong> {job.location}</p>
+                    <p><strong>Type:</strong> {job.type}</p>
+                    <p><strong>Skills:</strong> {job.skills?.join(", ") || "N/A"}</p>
+
+                    <button
+                      className="btn-apply"
+                      onClick={() => applyJob(job._id)}
+                    >
+                      Apply
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage <= 1}
+                  >
+                    Prev
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (num) => (
+                      <button
+                        key={num}
+                        className={`page-btn ${num === currentPage ? "active" : ""}`}
+                        onClick={() => handlePageChange(num)}
+                      >
+                        {num}
+                      </button>
+                    )
+                  )}
 
                   <button
-                    className="btn-apply"
-                    onClick={() => applyJob(job._id)}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage >= totalPages}
                   >
-                    Apply
+                    Next
                   </button>
                 </div>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="pagination">
-                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage <= 1}>
-                  Prev
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-                  <button
-                    key={num}
-                    className={`page-btn ${num === currentPage ? "active" : ""}`}
-                    onClick={() => handlePageChange(num)}
-                  >
-                    {num}
-                  </button>
-                ))}
-
-                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage >= totalPages}>
-                  Next
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </main>
+              )}
+            </>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

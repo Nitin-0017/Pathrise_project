@@ -41,8 +41,6 @@ export default function CandidateSettings() {
 
         const profileRes = await getCandidateProfile();
         let skillsData = profileRes.data?.skills || [];
-
-        // Ensure skills are always an array
         if (!Array.isArray(skillsData)) {
           try {
             skillsData = JSON.parse(skillsData);
@@ -90,16 +88,12 @@ export default function CandidateSettings() {
       formData.append("gender", profile.gender);
       formData.append("phone", profile.phone);
       formData.append("address", profile.address);
-
-      // FIX: append skills as array, not stringify
       profile.skills.forEach((skill) => {
         formData.append("skills[]", skill);
       });
-
       if (profile.resume instanceof File) {
         formData.append("resume", profile.resume);
       }
-
       await updateCandidateProfile(formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -137,102 +131,107 @@ export default function CandidateSettings() {
   if (loading) return <div className="loading-screen">Loading...</div>;
 
   return (
-    <div className="layout">
-      <Sidebar user={user} activePage="settings" />
+    <div className="dashboard-wrapper">
+      <div className="dashboard-layout">
+        <Sidebar user={user} activePage="settings" />
 
-      <main className="main">
-        <h2>Profile</h2>
+        <main className="dashboard-main">
+          <h2>Profile</h2>
 
-        {!isEditing ? (
-          <div className="profile-card">
-            <div className="profile-avatar">{profile.name?.charAt(0)}</div>
+          {!isEditing ? (
+            <div className="profile-card">
+              <div className="profile-avatar">{profile.name?.charAt(0)}</div>
 
-            <p><strong>Name:</strong> {profile.name}</p>
-            <p><strong>Email:</strong> {profile.email}</p>
-            <p><strong>Age:</strong> {profile.age}</p>
-            <p><strong>Gender:</strong> {profile.gender}</p>
-            <p><strong>Phone:</strong> {profile.phone}</p>
-            <p><strong>Address:</strong> {profile.address}</p>
+              <p><strong>Name:</strong> {profile.name}</p>
+              <p><strong>Email:</strong> {profile.email}</p>
+              <p><strong>Age:</strong> {profile.age}</p>
+              <p><strong>Gender:</strong> {profile.gender}</p>
+              <p><strong>Phone:</strong> {profile.phone}</p>
+              <p><strong>Address:</strong> {profile.address}</p>
 
-            <p>
-              <strong>Skills:</strong>{" "}
-              {profile.skills.length ? profile.skills.join(", ") : "Not added"}
-            </p>
+              <p>
+                <strong>Skills:</strong>{" "}
+                {profile.skills.length ? profile.skills.join(", ") : "Not added"}
+              </p>
 
-            {profile.resume && <p><strong>Resume:</strong> Uploaded</p>}
+              {profile.resume && <p><strong>Resume:</strong> Uploaded</p>}
 
-            <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-            <button style={{ marginTop: "10px", backgroundColor: "#ef4444" }} onClick={() => setIsModalOpen(true)}>
-              Change Password
-            </button>
-          </div>
-        ) : (
-          <div className="settings-container">
-
-            <div className="setting-item">
-              <label>Age</label>
-              <input type="number" name="age" value={profile.age} onChange={handleProfileChange} />
+              <div className="btn-row">
+                <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+                <button
+                  style={{ backgroundColor: "#ef4444" }}
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Change Password
+                </button>
+              </div>
             </div>
+          ) : (
+            <div className="settings-container">
+              <div className="setting-item">
+                <label>Age</label>
+                <input type="number" name="age" value={profile.age} onChange={handleProfileChange} />
+              </div>
 
-            <div className="setting-item">
-              <label>Gender</label>
-              <select name="gender" value={profile.gender} onChange={handleProfileChange}>
-                <option value="">Select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
+              <div className="setting-item">
+                <label>Gender</label>
+                <select name="gender" value={profile.gender} onChange={handleProfileChange}>
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div className="setting-item">
+                <label>Phone</label>
+                <input type="text" name="phone" value={profile.phone} onChange={handleProfileChange} />
+              </div>
+
+              <div className="setting-item">
+                <label>Address</label>
+                <textarea name="address" value={profile.address} onChange={handleProfileChange}></textarea>
+              </div>
+
+              <div className="setting-item">
+                <label>Skills (comma separated)</label>
+                <input
+                  type="text"
+                  name="skills"
+                  value={profile.skills.join(", ")}
+                  onChange={handleProfileChange}
+                />
+              </div>
+
+              <div className="setting-item">
+                <label>Resume (PDF/DOCX)</label>
+                <input type="file" name="resume" onChange={handleProfileChange} />
+              </div>
+
+              <div className="btn-row">
+                <button onClick={handleSaveProfile} disabled={saving}>
+                  {saving ? "Saving..." : "Save Profile"}
+                </button>
+                <button onClick={() => setIsEditing(false)}>Cancel</button>
+              </div>
             </div>
+          )}
 
-            <div className="setting-item">
-              <label>Phone</label>
-              <input type="text" name="phone" value={profile.phone} onChange={handleProfileChange} />
+          {isModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal">
+                <h3>Change Password</h3>
+                <input type="password" name="currentPassword" placeholder="Current Password" onChange={handlePasswordChange} />
+                <input type="password" name="newPassword" placeholder="New Password" onChange={handlePasswordChange} />
+                <input type="password" name="confirmPassword" placeholder="Confirm New Password" onChange={handlePasswordChange} />
+
+                <button onClick={handlePasswordSave}>Save</button>
+                <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+              </div>
             </div>
-
-            <div className="setting-item">
-              <label>Address</label>
-              <textarea name="address" value={profile.address} onChange={handleProfileChange}></textarea>
-            </div>
-
-            <div className="setting-item">
-              <label>Skills (comma separated)</label>
-              <input
-                type="text"
-                name="skills"
-                value={profile.skills.join(", ")}
-                onChange={handleProfileChange}
-              />
-            </div>
-
-            <div className="setting-item">
-              <label>Resume (PDF/DOCX)</label>
-              <input type="file" name="resume" onChange={handleProfileChange} />
-            </div>
-
-            <button onClick={handleSaveProfile} disabled={saving}>
-              {saving ? "Saving..." : "Save Profile"}
-            </button>
-
-            <button style={{ marginTop: "10px" }} onClick={() => setIsEditing(false)}>
-              Cancel
-            </button>
-          </div>
-        )}
-
-        {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <h3>Change Password</h3>
-              <input type="password" name="currentPassword" placeholder="Current Password" onChange={handlePasswordChange} />
-              <input type="password" name="newPassword" placeholder="New Password" onChange={handlePasswordChange} />
-              <input type="password" name="confirmPassword" placeholder="Confirm New Password" onChange={handlePasswordChange} />
-
-              <button onClick={handlePasswordSave}>Save</button>
-              <button onClick={() => setIsModalOpen(false)}>Cancel</button>
-            </div>
-          </div>
-        )}
-      </main>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

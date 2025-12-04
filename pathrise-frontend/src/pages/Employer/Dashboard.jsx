@@ -55,7 +55,7 @@ export default function EmployerDashboard({ user }) {
         <Sidebar user={user} activePage="dashboard" />
 
         <main className="dashboard-main">
-          <h1 className="dashboard-title">Employer Dashboard</h1>
+          <h1 className="dashboard-title" style={{color:"black"}}>Employer Dashboard</h1>
 
           <div className="stats-cards">
             <div className="card">

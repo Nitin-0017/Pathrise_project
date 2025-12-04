@@ -16,7 +16,6 @@ exports.createOrUpdateProfile = async (req, res) => {
     const profileData = { ...req.body, user: req.user.id };
 
     if (req.file) {
-      // Full URL generate karna
       const filePath = `${req.protocol}://${req.get("host")}/uploads/resumes/${req.file.filename}`;
       profileData.resume = filePath;
     }

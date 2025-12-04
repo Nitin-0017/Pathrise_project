@@ -25,6 +25,7 @@ h2 {
   display: flex;
   justify-content: center;
   width: 100%;
+  margin-left: 5rem;
 }
 
 /* Table */
@@ -345,4 +346,131 @@ h2 {
   background: rgb(109, 109, 223);
   padding:0.3rem 1rem;
   border-radius: 6px;
+}
+/* Layout */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg, #f6f8fb);
+  padding-left: 260px; /* sidebar width */
+}
+
+.main {
+  padding: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger-btn span {
+  width: 28px;
+  height: 3px;
+  background-color: #0a66c2;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+.hamburger-btn.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Responsive Sidebar & Layout */
+@media (max-width: 900px) {
+  .layout {
+    padding-left: 0;
+  }
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
+/* Table Horizontal Scroll */
+.table-container {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  min-width: 700px;
+}
+/* Hamburger Button */
+.hamburger-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 36px;
+  height: 28px;
+  display: none; /* only for mobile */
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.hamburger-btn span {
+  display: block;
+  height: 4px;
+  width: 100%;
+  background: #0a66c2;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.hamburger-btn.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Show hamburger on small screens */
+@media (max-width: 900px) {
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
+/* Adjust main padding for sidebar */
+@media (min-width: 901px) {
+  .main {
+    padding-left: 0; /* since sidebar is always visible */
+  }
+}
+.search-bar{
+  display: flex;
+  flex-direction: column;
+  gap:2rem
 }

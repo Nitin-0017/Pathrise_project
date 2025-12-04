@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Briefcase,
-  Settings,
   LogOut,
   Users,
   FileText
@@ -79,7 +78,7 @@ export default function Sidebar({ user, activePage }) {
                 }`}
                 onClick={() => navigate("/candidate/settings")}
               >
-                <Settings size={18} /> Settings
+                <Users size={18} /> Profile
               </button>
             </>
           )}
@@ -108,7 +107,7 @@ export default function Sidebar({ user, activePage }) {
                 }`}
                 onClick={() => navigate("/employer/settings")}
               >
-                <Settings size={18} /> Settings
+                <Users size={18} /> Profile
               </button>
             </>
           )}

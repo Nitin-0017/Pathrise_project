@@ -14,7 +14,6 @@ export default function EmployerApplications() {
   const [statusFilter, setStatusFilter] = useState("");
 
   const debounceTimeout = useRef(null);
-  const isFirstRender = useRef(true);
   const applicationsPerPage = 10;
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -25,41 +24,31 @@ export default function EmployerApplications() {
         params: {
           page: currentPage,
           limit: applicationsPerPage,
-          search: searchTerm,
+          search: searchTerm.trim(),
           status: statusFilter,
         },
       });
 
-      setApplications(res.data.applications);
-      setTotalPages(res.data.totalPages);
+      setApplications(res.data.applications || []);
+      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error(err);
     }
     setLoading(false);
   };
 
-  // Handle Pagination + Status Filter changes
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchApplications();
-    // eslint-disable-next-line
   }, [currentPage, statusFilter]);
 
-  // Debounced Search FIXED (focus not getting lost)
   useEffect(() => {
     clearTimeout(debounceTimeout.current);
 
     debounceTimeout.current = setTimeout(() => {
-      if (!isFirstRender.current) {
-        fetchApplications();
-      }
+      fetchApplications();
     }, 500);
 
     return () => clearTimeout(debounceTimeout.current);
-    // eslint-disable-next-line
   }, [searchTerm]);
 
   const handleSearchChange = (e) => {
@@ -85,7 +74,8 @@ export default function EmployerApplications() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (loading) return <div className="loading-screen">Loading...</div>;
+  if (loading)
+    return <div className="loading-screen">Loading applications...</div>;
 
   return (
     <div className="layout">
@@ -147,7 +137,7 @@ export default function EmployerApplications() {
                     <tr key={app._id}>
                       <td>{app?.applicant?.name || "No Name"}</td>
                       <td>{app?.applicant?.email || "No Email"}</td>
-                      <td>{app?.applicant?.phone || "N/A"}</td>
+                      <td>{app?.applicant?.candidateProfile?.phone || "N/A"}</td>
                       <td>{app?.job?.title || "Unknown Job"}</td>
                       <td>
                         <span
@@ -159,8 +149,7 @@ export default function EmployerApplications() {
                         </span>
                       </td>
                       <td className="actions">
-                        {app.status === "Accepted" ||
-                        app.status === "Rejected" ? (
+                        {app.status !== "Pending" ? (
                           <span
                             className={`app-status-pill app-status-${app.status
                               .toLowerCase()
@@ -210,16 +199,17 @@ export default function EmployerApplications() {
                 <strong>Email:</strong> {selectedApp?.applicant?.email}
               </p>
               <p>
-                <strong>Phone:</strong> {selectedApp?.applicant?.phone}
+                <strong>Phone:</strong>{" "}
+                {selectedApp?.applicant?.candidateProfile?.phone || "N/A"}
               </p>
               <p>
                 <strong>Job Title:</strong> {selectedApp?.job?.title}
               </p>
               <p>
                 <strong>Resume:</strong>{" "}
-                {selectedApp?.applicant?.resume ? (
+                {selectedApp?.applicant?.candidateProfile?.resume ? (
                   <a
-                    href={selectedApp.applicant.resume}
+                    href={selectedApp.applicant.candidateProfile.resume}
                     target="_blank"
                     rel="noreferrer"
                   >

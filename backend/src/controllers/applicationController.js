@@ -1,6 +1,7 @@
 const Application = require("../models/applicationModel");
 const Job = require("../models/jobModel");
 const User = require("../models/userModel");
+const CandidateProfile = require("../models/candidateProfileModel"); 
 
 exports.applyToJob = async (req, res) => {
   const application = await Application.create({
@@ -25,15 +26,15 @@ exports.getApplicationsByEmployer = async (req, res) => {
   try {
     const { page = 1, limit = 10, search = "", status } = req.query;
 
+    // Employer ke posted jobs
     const jobs = await Job.find({ postedBy: req.user.id }).select("_id");
     const jobIds = jobs.map(job => job._id);
 
     const query = { job: { $in: jobIds } };
-
     if (status) query.status = status;
 
-    // Fix Search
-    if (search) {
+    // Candidate search by name
+    if (search.trim()) {
       const applicants = await User.find({
         name: { $regex: search, $options: "i" }
       }).select("_id");
@@ -45,14 +46,22 @@ exports.getApplicationsByEmployer = async (req, res) => {
     const totalApplications = await Application.countDocuments(query);
 
     const applications = await Application.find(query)
-      .populate("job", "title postedBy")
-      .populate("applicant", "name email phone resume")
-      .skip((page - 1) * limit)
+      .populate("job", "title")
+      .populate({
+        path: "applicant",
+        select: "name email candidateProfile",
+        populate: {
+          path: "candidateProfile",
+          model: "CandidateProfile",
+          select: "phone resume"
+        }
+      })
+      .skip((page - 1) * Number(limit))
       .limit(Number(limit));
 
-    res.json({
+    return res.json({
       applications,
-      totalPages: Math.ceil(totalApplications / limit)
+      totalPages: Math.ceil(totalApplications / limit),
     });
 
   } catch (err) {
@@ -60,7 +69,6 @@ exports.getApplicationsByEmployer = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch applications" });
   }
 };
-
 
 
 exports.deleteApplication = async (req, res) => {

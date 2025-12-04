@@ -9,6 +9,7 @@ const userRoutes = require("./routes/userRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes"); 
 const activityRoutes = require("./routes/activityRoutes");
 const candidateProfileRoutes = require("./routes/candidateProfileRoutes");
+const employerRoutes = require("./routes/employerRoutes");
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,7 @@ app.use("/api/users", userRoutes);
 app.use("/api", dashboardRoutes); 
 app.use("/api", activityRoutes);
 app.use("/api/candidate", candidateProfileRoutes);
+app.use("/api/employer", employerRoutes);
 
 app.get("/", (req, res) => {
   res.send("Pathrise backend is running 🚀");

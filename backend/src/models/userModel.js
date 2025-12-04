@@ -5,8 +5,14 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
   password: { type: String, required: true },
   role: { type: String, enum: ["Candidate", "Employer"], default: "Candidate" },
-  interviewsScheduled: { type: Number, default: 0 } 
-}, { timestamps: true });
+  interviewsScheduled: { type: Number, default: 0 },
 
+  // Link to Candidate Profile
+  candidateProfile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "CandidateProfile",
+    default: null,
+  }
+}, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);

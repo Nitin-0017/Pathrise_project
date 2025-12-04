@@ -37,5 +37,8 @@ export const getCandidateProfile = () => API.get("/candidate/profile");
 export const updateCandidateProfile = (data) =>
   API.post("/candidate/profile", data);
 
+export const getEmployerProfile = () => API.get("/employer/profile");
+export const updateEmployerProfile = (data) => API.post("/employer/profile", data);
+
 
 export default API;

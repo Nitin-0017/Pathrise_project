@@ -47,6 +47,7 @@
   text-align: center;
   background: linear-gradient(90deg, var(--primary), var(--purple), var(--pink));
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   margin-bottom: 30px;
   filter: drop-shadow(0 2px 12px rgba(74,168,255,0.25));

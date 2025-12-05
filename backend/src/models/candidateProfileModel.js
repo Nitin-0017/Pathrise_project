@@ -23,11 +23,11 @@ const CandidateProfile = new mongoose.Schema({
     type: String,
   },
   resume: {
-    type: String, // Resume file URL (Cloud / Upload)
+    type: String,
     default: null,
   },
   education: {
-    type: [String], // Future expansion
+    type: [String],
     default: [],
   },
   skills: {

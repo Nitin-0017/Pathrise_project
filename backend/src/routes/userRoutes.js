@@ -5,8 +5,6 @@ const { requireAuth } = require("../middleware/authMiddleware");
 
 router.get("/me", requireAuth, getMe);
 router.put("/me", requireAuth, updateMe);
-
-// ✅ Naya route for password change
 router.post("/change-password", requireAuth, changePassword);
 
 module.exports = router;

@@ -7,7 +7,7 @@ import {
   Users,
   FileText
 } from "lucide-react";
-import "./Sidebar.css"; // <-- IMPORTANT
+import "./Sidebar.css"; // 
 
 export default function Sidebar({ user, activePage }) {
   const navigate = useNavigate();
@@ -22,7 +22,6 @@ export default function Sidebar({ user, activePage }) {
 
   return (
     <>
-      {/* HAMBURGER BUTTON */}
       <button
         className={`hamburger-btn ${isOpen ? "open" : ""}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -32,7 +31,6 @@ export default function Sidebar({ user, activePage }) {
         <span></span>
       </button>
 
-      {/* SIDEBAR */}
       <aside className={`sidebar ${isOpen ? "show" : ""}`}>
         <h2 className="logo">Pathrise</h2>
 

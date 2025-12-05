@@ -2,7 +2,6 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// Ensure uploads/resumes folder exists
 const dir = "./uploads/resumes";
 if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 

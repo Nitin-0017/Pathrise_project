@@ -33,7 +33,6 @@ export default function Applications() {
     }
   };
 
-  // ---- Cancel Application Handler ----
   const handleCancel = async (appId) => {
     if (!window.confirm("Are you sure you want to cancel this application?")) return;
 

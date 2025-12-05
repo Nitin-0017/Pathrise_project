@@ -13,14 +13,12 @@
   align-items: center;
 }
 
-/* Page Heading */
 h2 {
   margin-bottom: 30px;
   color: var(--text, #1a1f2b);
   text-align: center;
 }
 
-/* Table Wrapper to center */
 .table-container {
   display: flex;
   justify-content: center;
@@ -28,7 +26,6 @@ h2 {
   margin-left: 5rem;
 }
 
-/* Table */
 .table {
   width: 100%;
   max-width: 900px;
@@ -45,7 +42,7 @@ h2 {
   padding: 12px 16px; /* slightly smaller for better alignment */
   border-bottom: 1px solid var(--border, #e6e9ef);
   text-align: left;
-  vertical-align: middle; /* ensures all cells line up */
+  vertical-align: middle;
 }
 
 .table th {
@@ -53,7 +50,6 @@ h2 {
   color: var(--muted, #6b7280);
 }
 
-/* Status Pills */
 .app-status-pill {
   padding: 4px 12px;
   border-radius: 6px;
@@ -79,11 +75,10 @@ h2 {
   color: #78350f;
 }
 
-/* Actions Column */
 .table td.actions {
   display: flex;
   gap: 8px;
-  align-items: center; /* vertically center buttons and badge */
+  align-items: center; 
 }
 
 .table td button.contact-btn,
@@ -91,10 +86,9 @@ h2 {
   padding: 4px 12px;
   font-size: 13px;
   border-radius: 6px;
-  line-height: 1.5; /* same height as badges */
+  line-height: 1.5; 
 }
 
-/* Buttons */
 .table td button.contact-btn {
   background: var(--primary, #0a66c2);
   color: white;
@@ -119,7 +113,6 @@ h2 {
   background: #c1121f;
 }
 
-/* Loading Screen */
 .loading-screen {
   display: flex;
   justify-content: center;
@@ -130,7 +123,6 @@ h2 {
   color: var(--primary, #0a66c2);
 }
 
-/* No Applications Message */
 .no-applications {
   margin-top: 40px;
   font-size: 18px;
@@ -138,7 +130,6 @@ h2 {
   text-align: center;
 }
 
-/* Pagination */
 .pagination {
   display: flex;
   justify-content: center;
@@ -167,15 +158,13 @@ h2 {
   font-weight: bold;
   border: none;
 }
-/* Modal Styles */
-/* Modal Backdrop */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* slightly darker for focus */
+  background: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -183,7 +172,6 @@ h2 {
   animation: fadeIn 0.2s ease-in-out;
 }
 
-/* Modal Content */
 .modal-content {
   background: #ffffff;
   padding: 32px 28px;
@@ -197,7 +185,6 @@ h2 {
   animation: slideUp 0.25s ease-out;
 }
 
-/* Modal Headings and Text */
 .modal-content h3 {
   margin: 0;
   font-size: 22px;
@@ -222,7 +209,6 @@ h2 {
   text-decoration: underline;
 }
 
-/* Modal Actions */
 .modal-actions {
   margin-top: 24px;
   display: flex;
@@ -243,7 +229,6 @@ h2 {
   text-align: center;
 }
 
-/* Accept Button */
 .modal-actions .contact-btn {
   background: #0a66c2;
   color: #fff;
@@ -254,7 +239,6 @@ h2 {
   transform: translateY(-2px);
 }
 
-/* Reject Button */
 .modal-actions .reject-btn {
   background: #ef4444;
   color: #fff;
@@ -265,7 +249,6 @@ h2 {
   transform: translateY(-2px);
 }
 
-/* Close Button */
 .modal-actions button:last-child {
   background: #f3f4f6;
   color: #374151;
@@ -276,7 +259,6 @@ h2 {
   transform: translateY(-1px);
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -286,10 +268,9 @@ h2 {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-/* Search & Filter Bar */
 .filters {
   display: flex;
-  justify-content: space-between; /* push items to edges */
+  justify-content: space-between; 
   margin-bottom: 1.8rem;
   gap: 5rem;
 }
@@ -300,10 +281,10 @@ h2 {
 }
 
 .filters input[type="text"] {
-  width: 100%; /* full width inside wrapper */
+  width: 100%; 
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid #cbd5e1; /* light gray */
+  border: 1px solid #cbd5e1;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -330,7 +311,6 @@ h2 {
   box-shadow: 0 0 4px rgba(10, 102, 194, 0.3);
 }
 
-/* Responsive for small screens */
 @media (max-width: 600px) {
   .filters {
     flex-direction: column;
@@ -347,7 +327,7 @@ h2 {
   padding:0.3rem 1rem;
   border-radius: 6px;
 }
-/* Layout */
+
 .layout {
   display: flex;
   min-height: 100vh;
@@ -363,7 +343,6 @@ h2 {
   align-items: center;
 }
 
-/* Hamburger Button */
 .hamburger-btn {
   display: none;
   position: fixed;
@@ -397,7 +376,6 @@ h2 {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Responsive Sidebar & Layout */
 @media (max-width: 900px) {
   .layout {
     padding-left: 0;
@@ -407,7 +385,6 @@ h2 {
   }
 }
 
-/* Table Horizontal Scroll */
 .table-container {
   display: block;
   overflow-x: auto;
@@ -418,14 +395,13 @@ h2 {
 .table {
   min-width: 700px;
 }
-/* Hamburger Button */
 .hamburger-btn {
   position: fixed;
   top: 16px;
   left: 16px;
   width: 36px;
   height: 28px;
-  display: none; /* only for mobile */
+  display: none; 
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
@@ -456,17 +432,15 @@ h2 {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Show hamburger on small screens */
 @media (max-width: 900px) {
   .hamburger-btn {
     display: flex;
   }
 }
 
-/* Adjust main padding for sidebar */
 @media (min-width: 901px) {
   .main {
-    padding-left: 0; /* since sidebar is always visible */
+    padding-left: 0;
   }
 }
 .search-bar{

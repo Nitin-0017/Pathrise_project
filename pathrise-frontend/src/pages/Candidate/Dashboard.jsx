@@ -3,8 +3,6 @@ import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import "./CandidateDashboard.css";
 import API, { getCandidateDashboardData } from "../../api/axios";
-
-// React Icons
 import { FiBriefcase, FiFileText, FiClock, FiActivity } from "react-icons/fi";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { RiChatHistoryLine } from "react-icons/ri";
@@ -17,8 +15,6 @@ export default function CandidateDashboard({ user }) {
   });
 
   const [loading, setLoading] = useState(true);
-
-  // ACTIVITY FEED STATE
   const [activities, setActivities] = useState([]);
   const [feedLoading, setFeedLoading] = useState(true);
   const [feedError, setFeedError] = useState(null);
@@ -43,8 +39,6 @@ export default function CandidateDashboard({ user }) {
     try {
       const res = await API.get("/candidate/activity");
       let feed = res.data.feed || res.data || [];
-
-      // 💥 FIX: Remove unwanted backend messages like “complete your profile”
       feed = feed.filter(
         (item) =>
           item.message &&
@@ -95,8 +89,6 @@ export default function CandidateDashboard({ user }) {
           <div className="dashboard-header">
             <h1 className="dashboard-title" style={{color:"black"}} >Candidate Dashboard</h1>
           </div>
-
-          {/* ==================== STATS ====================== */}
           <div className="stats-cards">
             <div className="card cool-card">
               <div className="card-icon">
@@ -122,8 +114,6 @@ export default function CandidateDashboard({ user }) {
               <p>{stats.interviewsScheduled}</p>
             </div>
           </div>
-
-          {/* ============== ACTIVITY FEED ================== */}
           <div className="activity-feed">
             <h2 className="activity-heading">
               <RiChatHistoryLine size={22} style={{ marginRight: 8 }} />
@@ -140,7 +130,6 @@ export default function CandidateDashboard({ user }) {
                     key={index}
                     className={`feed-card ${item.type?.toLowerCase()}`}
                   >
-                    {/* ICON BASED ON TYPE */}
                     <div className="feed-icon">
                       {item.type === "Application" && <FiFileText size={22} />}
                       {item.type === "Interview" && <FiClock size={22} />}

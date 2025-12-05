@@ -6,8 +6,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ["Candidate", "Employer"], default: "Candidate" },
   interviewsScheduled: { type: Number, default: 0 },
-
-  // Link to Candidate Profile
   candidateProfile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "CandidateProfile",

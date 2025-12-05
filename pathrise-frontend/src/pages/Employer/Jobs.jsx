@@ -151,7 +151,6 @@ export default function EmployerJobs() {
 
       <main className="main">
         <h1 className="dashboard-title" style={{color:"black"}}>My Jobs</h1>
-        {/* Top bar */}
         <div className="jobs-top-bar">
           <input
             className="search-input"
@@ -169,8 +168,6 @@ export default function EmployerJobs() {
             {formVisible ? "Close" : "+ Job"}
           </button>
         </div>
-
-        {/* Job Form */}
         {formVisible && (
           <div className="job-form-container">
             <h2>{editingJobId ? "Edit Job" : "Add New Job"}</h2>
@@ -232,7 +229,6 @@ export default function EmployerJobs() {
           </div>
         )}
 
-        {/* Jobs + Filters */}
         <div className="jobs-content">
           <div className="jobs-table-wrap">
             {jobs.length === 0 ? (
@@ -288,7 +284,6 @@ export default function EmployerJobs() {
             </div>
           </div>
 
-          {/* Filters Sidebar */}
           <div className="filters-sidebar">
             <h3>Filters</h3>
 

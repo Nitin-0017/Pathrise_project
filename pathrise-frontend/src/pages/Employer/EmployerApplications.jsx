@@ -71,7 +71,6 @@ export default function EmployerApplications() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ----------- Layout & Sidebar Toggle -----------
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -90,11 +89,8 @@ export default function EmployerApplications() {
         />
 
         <main className="dashboard-main">
-          
-
+        
           <h2 className="dashboard-title" style={{color:"black"}}>Applications for My Jobs</h2>
-
-          {/* Search + Filter */}
           <div className="search-bar">
             <input
               type="text"
@@ -177,7 +173,6 @@ export default function EmployerApplications() {
                 </table>
               </div>
 
-              {/* Pagination */}
               <div className="pagination">
                 {Array.from({ length: totalPages }, (_, i) => (
                   <button

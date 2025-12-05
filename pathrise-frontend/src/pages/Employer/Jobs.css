@@ -31,7 +31,6 @@
   color: var(--text);
 }
 
-/* Top bar */
 .jobs-top-bar {
   display: flex;
   gap: 3rem;
@@ -68,18 +67,15 @@
   background: #084a9b;
 }
 
-/* Jobs + Filters Layout */
 .jobs-content {
   display: flex;
   gap: 20px;
 }
 
-/* Jobs Table */
 .jobs-table-wrap {
   flex: 1;
 }
 
-/* Filters Sidebar */
 .filters-sidebar {
   width: 220px;
   background: var(--card);
@@ -119,7 +115,6 @@
   box-shadow: 0 0 0 4px rgba(10,102,194,0.06);
 }
 
-/* Pagination */
 .pagination {
   display: flex;
   justify-content: center;
@@ -150,7 +145,6 @@
   border-color: var(--primary);
 }
 
-/* Loading Screen */
 .loading-screen {
   display: flex;
   justify-content: center;
@@ -161,7 +155,6 @@
   color: var(--primary);
 }
 
-/* Job Form Container */
 .job-form-container {
   background: var(--card);
   padding: 30px 25px;
@@ -207,7 +200,6 @@
   min-height: 100px;
 }
 
-/* Form Buttons */
 .form-buttons {
   display: flex;
   gap: 14px;
@@ -242,7 +234,6 @@
   background: #e5e7eb;
 }
 
-/* Jobs Table */
 .table {
   width: 100%;
   min-width: 700px;
@@ -286,7 +277,6 @@
   padding-right: 24px;
 }
 
-/* Action buttons */
 .btns {
   display: flex;
   gap: 8px;
@@ -371,11 +361,10 @@
 }
 .jobs-table-wrap {
   flex: 1;
-  overflow-x: auto; /* Allows horizontal scroll */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; 
 }
 
-/* Optional: style the scrollbar lightly */
 .jobs-table-wrap::-webkit-scrollbar {
   height: 6px;
 }
@@ -390,7 +379,7 @@
 }
 @media (max-width: 900px) {
   .main {
-    margin-left: 0; /* Sidebar will overlay */
+    margin-left: 0; 
     padding: 20px 12px;
   }
 
@@ -401,7 +390,7 @@
 
   .filters-sidebar {
     width: 100%;
-    order: -1; /* optional: show filters on top */
+    order: -1; 
     margin-bottom: 20px;
   }
 }

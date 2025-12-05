@@ -23,7 +23,7 @@ export default function EmployerSettings() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userRes = await getEmployerProfile(); // Fetch profile including user info
+        const userRes = await getEmployerProfile(); 
         setUser(userRes.data.user || {});
         setProfile({
           name: userRes.data.user?.name || "",

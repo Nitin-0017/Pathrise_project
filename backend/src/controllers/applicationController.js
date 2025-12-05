@@ -26,14 +26,12 @@ exports.getApplicationsByEmployer = async (req, res) => {
   try {
     const { page = 1, limit = 10, search = "", status } = req.query;
 
-    // Employer ke posted jobs
     const jobs = await Job.find({ postedBy: req.user.id }).select("_id");
     const jobIds = jobs.map(job => job._id);
 
     const query = { job: { $in: jobIds } };
     if (status) query.status = status;
 
-    // Candidate search by name
     if (search.trim()) {
       const applicants = await User.find({
         name: { $regex: search, $options: "i" }
@@ -123,8 +121,6 @@ exports.updateApplicationStatus = async (req, res) => {
   }
 };
 
-// GET /api/candidate/activity
-// Returns recent activities for the logged-in candidate in a flat feed
 exports.getCandidateActivityFeed = async (req, res) => {
   try {
     const candidateId = req.user.id;
@@ -144,9 +140,6 @@ exports.getCandidateActivityFeed = async (req, res) => {
       link: `/jobs/${a.job?._id || ""}`
     }));
 
-    // 2) Recent status updates for applications (if you want to surface status changes)
-    // (This requires you to store status change history; if not available, skip)
-    // For now, we'll surface accepted/interview statuses from latest applications
     const statusItems = apps
       .filter(a => a.status && (a.status === "Accepted" || a.status === "Interview Scheduled" || a.status === "Rejected"))
       .map(a => ({
@@ -156,8 +149,7 @@ exports.getCandidateActivityFeed = async (req, res) => {
         meta: "",
         link: `/applications/${a._id}`
       }));
-
-    // 3) Profile / system messages (example — optional)
+      
     const profileItem = {
       type: "system",
       message: "Complete your profile to increase visibility (skills, resume).",

@@ -5,40 +5,35 @@ exports.getJobs = async (req, res) => {
     const search = req.query.search || "";
     const typeFilter = req.query.type || "";
     const locationFilter = req.query.location || "";
-    const skillsFilter = req.query.skills || ""; // comma separated
+    const skillsFilter = req.query.skills || "";
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 9;
     const skip = (page - 1) * limit;
 
     let filters = {};
 
-    // Employer sees only their own jobs
     if (req.user.role === "Employer") {
       filters.postedBy = req.user.id;
     }
 
-    // Search filter for text fields + array skills
     if (search.trim() !== "") {
       const regex = new RegExp(search, "i");
       filters.$or = [
         { title: regex },
         { company: regex },
         { location: regex },
-        { skills: { $in: [regex] } }, // ✅ correct way for array
+        { skills: { $in: [regex] } }, 
       ];
     }
 
-    // Type filter
     if (typeFilter) {
       filters.type = typeFilter;
     }
 
-    // Location filter (optional extra filtering)
     if (locationFilter.trim() !== "") {
       filters.location = { $regex: locationFilter, $options: "i" };
     }
 
-    // Skills filter (comma separated, matches all)
     if (skillsFilter.trim() !== "") {
       const skillsArr = skillsFilter.split(",").map((s) => s.trim());
       filters.skills = { $all: skillsArr.map((s) => new RegExp(s, "i")) };

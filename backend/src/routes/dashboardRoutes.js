@@ -7,7 +7,6 @@ const {
 } = require("../controllers/dashboardController");
 
 router.get("/dashboard", requireAuth, requireRole("Employer"), getDashboardData);
-
 router.get("/candidate", requireAuth, requireRole("Candidate"), getCandidateDashboardData);
 
 module.exports = router;

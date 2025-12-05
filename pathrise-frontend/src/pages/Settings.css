@@ -6,7 +6,6 @@
   padding: 30px;
 }
 
-/* 📌 Main Content Area */
 .main {
   width: 100%;
   display: flex;
@@ -21,7 +20,6 @@
   color: #222;
 }
 
-/* 🧊 Profile Settings Card */
 .settings-container {
   width: 100%;
   max-width: 650px;
@@ -37,7 +35,6 @@
   animation: fadeInUp 0.8s ease;
 }
 
-/* Section Headings */
 .section-title {
   font-size: 18px;
   font-weight: 700;
@@ -46,7 +43,6 @@
   padding-left: 10px;
 }
 
-/* 📝 Form Fields */
 .setting-item {
   display: flex;
   flex-direction: column;
@@ -59,7 +55,6 @@
   color: #3a3a3a;
 }
 
-/* ✍️ Inputs */
 .setting-item input,
 .setting-item textarea {
   padding: 14px 16px;
@@ -89,7 +84,6 @@
   font-size: 14px;
 }
 
-/* Resume File Name */
 .resume-name {
   font-size: 14px;
   font-weight: 500;
@@ -97,14 +91,11 @@
   margin-top: -3px;
 }
 
-/* Divider */ 
 .divider {
   height: 1px;
   background: rgba(0,0,0,0.08);
   margin: 16px 0;
 }
-
-/* 🎯 Primary Buttons */
 button {
   padding: 14px;
   font-size: 16px;
@@ -127,12 +118,10 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* 🔐 Change Password Button */
 .change-password {
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
 }
 
-/* 🔐 Modal Overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -144,7 +133,6 @@ button:disabled {
   z-index: 1000;
 }
 
-/* 💎 Modal Box */
 .modal {
   width: 400px;
   max-width: 95%;
@@ -170,7 +158,6 @@ button:disabled {
   margin-top: 16px;
 }
 
-/* ✨ Animations */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }

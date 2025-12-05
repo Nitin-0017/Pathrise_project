@@ -12,7 +12,7 @@ exports.getProfile = async (req, res) => {
     const profile = await Employer.findOne({ user: req.user.id });
 
     res.json({
-      user, // always return user info
+      user, 
       age: profile?.age || "",
       gender: profile?.gender || "",
       experience: profile?.experience || "",
@@ -28,7 +28,6 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// Create or Update Employer Profile
 exports.createOrUpdateProfile = async (req, res) => {
   try {
     const profileData = { ...req.body, user: req.user.id };

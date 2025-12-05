@@ -9,8 +9,6 @@ const upload = require("../middleware/upload");
 const router = express.Router();
 
 router.get("/profile", requireAuth, getProfile);
-
-// Add multer middleware for resume upload
 router.post("/profile", requireAuth, upload.single("resume"), createOrUpdateProfile);
 
 module.exports = router;

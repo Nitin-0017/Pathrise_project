@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import "./EmployerDashboard.css";
-import { getDashboardData } from "../../api/axios";  
+import { getDashboardData } from "../../api/axios";
 
 export default function EmployerDashboard({ user }) {
   const [stats, setStats] = useState({
@@ -55,7 +55,9 @@ export default function EmployerDashboard({ user }) {
         <Sidebar user={user} activePage="dashboard" />
 
         <main className="dashboard-main">
-          <h1 className="dashboard-title" style={{color:"black"}}>Employer Dashboard</h1>
+          <h1 className="dashboard-title" style={{ color: "black" }}>
+            Employer Dashboard
+          </h1>
 
           <div className="stats-cards">
             <div className="card">

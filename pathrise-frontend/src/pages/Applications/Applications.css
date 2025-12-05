@@ -1,6 +1,4 @@
-/***********************
-   SIDEBAR
-************************/
+
 .sidebar {
   width: 260px;
   background: #ffffff;
@@ -21,9 +19,6 @@
   left: -260px;
 }
 
-/***********
- HAMBURGER
-***********/
 .hamburger-btn {
   position: fixed;
   top: 18px;
@@ -57,9 +52,6 @@
   transform: translateY(-11px) rotate(-45deg);
 }
 
-/************************
-     MAIN LAYOUT
-*************************/
 .dashboard-container {
   display: flex;
   min-height: 100vh;
@@ -72,10 +64,6 @@
   flex: 1;
   padding: 40px 50px;
 }
-
-/************************
-     APPLICATION CARDS
-*************************/
 .applications-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -110,9 +98,6 @@
   margin: 4px 0;
 }
 
-/***********************
-   STATUS PILL + TEXT
-************************/
 .status-row {
   display: flex;
   align-items: center;
@@ -139,10 +124,7 @@
 .status-rejected { background: #ef4444; }
 .status-interview { background: #3b82f6; }
 
-/************************
-     RESPONSIVE
-*************************/
-/* Tablet */
+
 @media (max-width: 1024px) {
   .dashboard-container {
     padding-left: 0;
@@ -165,7 +147,7 @@
   }
 }
 
-/* Mobile */
+
 @media (max-width: 768px) {
   .applications-list {
     grid-template-columns: 1fr;

@@ -1,5 +1,5 @@
 :root {
-  --primary: #4aa8ff;
+  --primary: #2b6ead;
   --purple: #a78bfa;
   --pink: #f472b6;
   --aqua: #5eead4;
@@ -9,7 +9,6 @@
   --glass: rgba(255, 255, 255, 0.35);
 }
 
-/* BACKGROUND MAGIC */
 .dashboard-wrapper {
   background: linear-gradient(135deg, #d8eaff, #ece4ff, #ffe3f4);
   padding: 32px;
@@ -28,7 +27,6 @@
   background: var(--primary);
 }
 
-/* DASHBOARD LAYOUT */
 .dashboard-layout {
   width: 100%;
   display: flex;
@@ -40,7 +38,6 @@
   padding: 24px;
 }
 
-/* TITLE */
 .dashboard-title {
   font-size: 38px;
   font-weight: 900;
@@ -53,8 +50,6 @@
   filter: drop-shadow(0 2px 12px rgba(74,168,255,0.25));
 }
 
-
-/* ----------------- STATS CARDS ------------------ */
 .stats-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
@@ -90,7 +85,6 @@
   color: var(--primary);
 }
 
-/* ICONS ON CARDS */
 .card-icon {
   width: 56px;
   height: 56px;
@@ -110,8 +104,6 @@
   transform: scale(1.1) rotate(6deg);
 }
 
-
-/* ------------------- ACTIVITY FEED ------------------ */
 .activity-feed {
   position: relative;
   padding-left: 42px;
@@ -127,8 +119,6 @@
   gap: 10px;
 }
 
-
-/* Timeline Line */
 .activity-feed::before {
   content: "";
   position: absolute;
@@ -141,7 +131,6 @@
   box-shadow: 0 0 16px var(--primary);
 }
 
-/* Feed Cards */
 .feed-cards {
   display: flex;
   flex-direction: column;
@@ -168,7 +157,6 @@
   box-shadow: 0 15px 55px rgba(74,168,255,0.25);
 }
 
-/* Timeline Dots */
 .feed-card::before {
   content: "";
   position: absolute;
@@ -193,8 +181,6 @@
   box-shadow: 0 0 20px #6ee7b7;
 }
 
-
-/* Icons left */
 .feed-icon {
   width: 44px;
   height: 44px;
@@ -208,7 +194,6 @@
   color: var(--primary);
 }
 
-/* Feed body text */
 .feed-message {
   font-size: 15px;
   font-weight: 600;
@@ -219,15 +204,12 @@
   color: var(--muted);
 }
 
-
-/* NO Activity */
 .no-activity {
   color: var(--muted);
   padding: 14px;
   font-style: italic;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .dashboard-layout {
     flex-direction: column;

@@ -9,7 +9,6 @@ import Applications from "./pages/Applications/Applications";
 import CandidateSettings from "./pages/Candidate/CandidateSettings";
 import EmployerSettings from "./pages/Employer/EmployerSettings";
 import ProtectedRoute from "./components/ProtectedRoute";
-import "./App.css";
 
 export default function App() {
   return (

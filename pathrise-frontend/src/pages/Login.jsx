@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, Loader2, AlertCircle, ArrowRight } from "lucide-react";
 import "./Login.css";
 
 const API = import.meta.env.VITE_BACKEND_URL;
@@ -37,41 +38,82 @@ export default function Login() {
 
     } catch (err) {
       setLoading(false);
-      setError(err?.response?.data?.message || "Login failed");
+      setError(err?.response?.data?.message || "Invalid credentials. Please try again.");
     }
   };
 
   return (
     <div className="login-wrapper">
-      <div className="card">
-        <div className="form-title">Login to Pathrise</div>
-        <div className="small-muted">Use your account to continue</div>
+      <div className="login-card">
+        <div className="login-header">
+          <h1 className="login-title text-gradient">Welcome back</h1>
+          <p className="login-subtitle">Enter your credentials to access your account</p>
+        </div>
 
-        {error && <div className="alert">{error}</div>}
+        {error && (
+          <div className="alert-error">
+            <AlertCircle size={16} />
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <input
-            className="input"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={onChange}
-          />
-          <input
-            className="input"
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={onChange}
-          />
-          <button className="btn" type="submit" disabled={loading}>
-            {loading ? "Signing in..." : "Login"}
+          <div className="form-group">
+            <label className="form-label" htmlFor="email">Email Address</label>
+            <div style={{ position: 'relative' }}>
+              <Mail size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              <input
+                id="email"
+                className="login-input"
+                style={{ paddingLeft: '40px' }}
+                name="email"
+                type="email"
+                placeholder="name@company.com"
+                required
+                value={form.email}
+                onChange={onChange}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <label className="form-label" htmlFor="password" style={{ marginBottom: 0 }}>Password</label>
+              <Link to="/forgot-password" style={{ fontSize: '0.75rem', color: 'var(--primary)' }}>Forgot password?</Link>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              <input
+                id="password"
+                className="login-input"
+                style={{ paddingLeft: '40px' }}
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                required
+                value={form.password}
+                onChange={onChange}
+              />
+            </div>
+          </div>
+
+          <button className="btn-login" type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                Signing in...
+              </>
+            ) : (
+              <>
+                Continue
+                <ArrowRight size={18} />
+              </>
+            )}
           </button>
         </form>
 
-        <div className="link-row">
-          Don't have an account? <Link to="/signup">Sign up</Link>
+        <div className="login-footer">
+          Don't have an account? <Link to="/signup">Create one now</Link>
         </div>
       </div>
     </div>

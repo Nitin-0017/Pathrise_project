@@ -93,3 +93,7 @@ Pathrise is designed to simplify the job and internship search process for candi
 ## 8. Author
 **Nitin Kumar**  
 
+
+Ai chatbot 
+Ats score checker
+without completeing user not able to apply 

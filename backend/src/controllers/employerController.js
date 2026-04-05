@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const Employer = require("../models/Employer");
 
-// Get employer profile
+
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");

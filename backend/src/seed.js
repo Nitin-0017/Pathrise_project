@@ -19,13 +19,13 @@ const seedDatabase = async () => {
     const hashedPassword = await bcrypt.hash("password123", 10);
 
 const users = await User.insertMany([
-  // Employers
+
   { name: "Alice Johnson", email: "alice.johnson@techcorp.com", password: hashedPassword, role: "Employer" },
   { name: "Bob Smith", email: "bob.smith@innovatex.com", password: hashedPassword, role: "Employer" },
   { name: "Charlie Brown", email: "charlie.brown@globalsoft.com", password: hashedPassword, role: "Employer" },
   { name: "Diana Prince", email: "diana.prince@nextgensolutions.com", password: hashedPassword, role: "Employer" },
 
-  // Candidates
+
   { name: "Ethan Hunt", email: "ethan.hunt@gmail.com", password: hashedPassword, role: "Candidate" },
   { name: "Fiona Gallagher", email: "fiona.gallagher@gmail.com", password: hashedPassword, role: "Candidate" },
   { name: "George Miller", email: "george.miller@gmail.com", password: hashedPassword, role: "Candidate" },
@@ -84,10 +84,10 @@ const users = await User.insertMany([
       }
     }
 
-    console.log("✅ Database seeded successfully with employers, candidates, jobs, and applications!");
+    console.log("Database seeded successfully with employers, candidates, jobs, and applications!");
     process.exit();
   } catch (err) {
-    console.error("❌ Seeding failed:", err);
+    console.error("Seeding failed:", err);
     process.exit(1);
   }
 };

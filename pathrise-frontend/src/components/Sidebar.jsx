@@ -5,14 +5,17 @@ import {
   Briefcase,
   LogOut,
   Users,
-  FileText
+  FileText,
+  Menu,
+  X,
+  Settings
 } from "lucide-react";
-import "./Sidebar.css"; // 
+import "./Sidebar.css";
 
 export default function Sidebar({ user, activePage }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const role = user.role;
+  const role = user?.role || "Candidate";
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -20,129 +23,72 @@ export default function Sidebar({ user, activePage }) {
     navigate("/login");
   };
 
+  const navItems = {
+    Candidate: [
+      { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/candidate/dashboard' },
+      { id: 'jobs', label: 'Find Jobs', icon: Briefcase, path: '/candidate/jobs' },
+      { id: 'applications', label: 'Applications', icon: FileText, path: '/candidate/applications' },
+      { id: 'settings', label: 'Profile Settings', icon: Settings, path: '/candidate/settings' },
+    ],
+    Employer: [
+      { id: 'dashboard', label: 'Recruiter Hub', icon: LayoutDashboard, path: '/employer/dashboard' },
+      { id: 'jobs', label: 'My Postings', icon: Briefcase, path: '/employer/jobs' },
+      { id: 'applications', label: 'Manage Applicants', icon: FileText, path: '/employer/applications' },
+      { id: 'settings', label: 'Company Profile', icon: Settings, path: '/employer/settings' },
+    ],
+    Admin: [
+      { id: 'dashboard', label: 'Admin Panel', icon: LayoutDashboard, path: '/admin/dashboard' },
+      { id: 'users', label: 'User Management', icon: Users, path: '/admin/users' },
+      { id: 'jobs', label: 'Job Moderation', icon: Briefcase, path: '/admin/jobs' },
+      { id: 'applications', label: 'Global Applications', icon: FileText, path: '/admin/applications' },
+    ]
+  };
+
+  const currentNav = navItems[role] || [];
+
   return (
     <>
-      <button
-        className={`hamburger-btn ${isOpen ? "open" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
+      <button className="mobile-nav-toggle" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      <aside className={`sidebar ${isOpen ? "show" : ""}`}>
-        <h2 className="logo">Pathrise</h2>
-
-        <div className="profile">
-          <div className="avatar">{user.name[0].toUpperCase()}</div>
-          <h3>{user.name}</h3>
-          <p className="role">{role}</p>
+      <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+        <div className="sidebar-logo">
+          Path<span>Rise</span>
         </div>
 
-        <nav className="menu">
-          <button
-            className={`menu-item ${
-              activePage === "dashboard" ? "active" : ""
-            }`}
-            onClick={() => navigate(`/${role.toLowerCase()}/dashboard`)}
-          >
-            <LayoutDashboard size={18} /> Dashboard
-          </button>
+        <div className="sidebar-profile">
+          <div className="sidebar-avatar">
+            {user?.name?.[0]?.toUpperCase() || "U"}
+          </div>
+          <div className="sidebar-user-info">
+            <div className="sidebar-user-name">{user?.name || "User"}</div>
+            <div className="sidebar-user-role">{role}</div>
+          </div>
+        </div>
 
-          {role === "Candidate" && (
-            <>
-              <button
-                className={`menu-item ${
-                  activePage === "jobs" ? "active" : ""
-                }`}
-                onClick={() => navigate("/candidate/jobs")}
-              >
-                <Briefcase size={18} /> Jobs
-              </button>
-
-              <button
-                className={`menu-item ${
-                  activePage === "applications" ? "active" : ""
-                }`}
-                onClick={() => navigate("/candidate/applications")}
-              >
-                <FileText size={18} /> My Applications
-              </button>
-
-              <button
-                className={`menu-item ${
-                  activePage === "settings" ? "active" : ""
-                }`}
-                onClick={() => navigate("/candidate/settings")}
-              >
-                <Users size={18} /> Profile
-              </button>
-            </>
-          )}
-
-          {role === "Employer" && (
-            <>
-              <button
-                className={`menu-item ${
-                  activePage === "jobs" ? "active" : ""
-                }`}
-                onClick={() => navigate("/employer/jobs")}
-              >
-                <Briefcase size={18} /> My Job Postings
-              </button>
-              <button
-                className={`menu-item ${
-                  activePage === "applications" ? "active" : ""
-                }`}
-                onClick={() => navigate("/employer/applications")}
-              >
-                <FileText size={18} /> Applications
-              </button>
-              <button
-                className={`menu-item ${
-                  activePage === "settings" ? "active" : ""
-                }`}
-                onClick={() => navigate("/employer/settings")}
-              >
-                <Users size={18} /> Profile
-              </button>
-            </>
-          )}
-
-          {role === "Admin" && (
-            <>
-              <button
-                className={`menu-item ${
-                  activePage === "users" ? "active" : ""
-                }`}
-                onClick={() => navigate("/admin/users")}
-              >
-                <Users size={18} /> Manage Users
-              </button>
-              <button
-                className={`menu-item ${
-                  activePage === "jobs" ? "active" : ""
-                }`}
-                onClick={() => navigate("/admin/jobs")}
-              >
-                <Briefcase size={18} /> All Jobs
-              </button>
-              <button
-                className={`menu-item ${
-                  activePage === "applications" ? "active" : ""
-                }`}
-                onClick={() => navigate("/admin/applications")}
-              >
-                <FileText size={18} /> All Applications
-              </button>
-            </>
-          )}
+        <nav className="sidebar-nav">
+          {currentNav.map((item) => (
+            <button
+              key={item.id}
+              className={`sidebar-item ${activePage === item.id ? "active" : ""}`}
+              onClick={() => {
+                navigate(item.path);
+                setIsOpen(false);
+              }}
+            >
+              <item.icon size={18} />
+              {item.label}
+            </button>
+          ))}
         </nav>
 
-        <button className="logout-btn" onClick={handleLogout}>
-          <LogOut size={18} /> Logout
-        </button>
+        <div className="sidebar-footer">
+          <button className="sidebar-item logout-item" onClick={handleLogout}>
+            <LogOut size={18} />
+            Logout
+          </button>
+        </div>
       </aside>
     </>
   );

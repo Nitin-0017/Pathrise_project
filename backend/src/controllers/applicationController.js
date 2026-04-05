@@ -125,7 +125,7 @@ exports.getCandidateActivityFeed = async (req, res) => {
   try {
     const candidateId = req.user.id;
 
-    // 1) Recent applications by this candidate (latest 20)
+
     const apps = await Application.find({ applicant: candidateId })
       .populate("job", "title company")
       .sort({ createdAt: -1 })
@@ -153,12 +153,12 @@ exports.getCandidateActivityFeed = async (req, res) => {
     const profileItem = {
       type: "system",
       message: "Complete your profile to increase visibility (skills, resume).",
-      createdAt: new Date(), // you could use actual stored notifications if present
+      createdAt: new Date(), 
       meta: "profile",
       link: "/profile"
     };
 
-    // Build combined feed, sort by date desc
+
     const combined = [...appItems, ...statusItems, profileItem]
       .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 30);

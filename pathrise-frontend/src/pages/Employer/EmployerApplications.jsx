@@ -1,6 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
 import Sidebar from "../../components/Sidebar";
 import API from "../../api/axios";
+import {
+  Search,
+  Filter,
+  ExternalLink,
+  Check,
+  X,
+  MoreHorizontal,
+  Mail,
+  Phone,
+  Briefcase,
+  XCircle,
+  CheckCircle,
+  Clock,
+  User
+} from "lucide-react";
 import "./EmployerApplications.css";
 
 export default function EmployerApplications() {
@@ -71,178 +86,206 @@ export default function EmployerApplications() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'Accepted': return <CheckCircle size={14} />;
+      case 'Rejected': return <XCircle size={14} />;
+      default: return <Clock size={14} />;
+    }
+  };
 
   return (
-    <div className="dashboard-wrapper">
-      <div className="dashboard-layout">
-        {/* Sidebar */}
-        <Sidebar
-          user={user}
-          activePage="applications"
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          onLogout={() => {
-            localStorage.removeItem("user");
-            window.location.href = "/login";
-          }}
-        />
+    <div className="employer-dashboard">
+      <Sidebar user={user} activePage="applications" />
 
-        <main className="dashboard-main">
-        
-          <h2 className="dashboard-title" style={{color:"black"}}>Applications for My Jobs</h2>
-          <div className="search-bar">
+      <main className="dashboard-main">
+        <header className="applications-header">
+          <h1 className="dashboard-title text-gradient">Application Tracker</h1>
+          <p className="dashboard-subtitle">Review and manage candidates for your active job postings</p>
+        </header>
+
+        <div className="filters-wrapper">
+          <div className="search-input-group">
+            <Search size={18} />
             <input
+              className="login-input"
               type="text"
-              placeholder="Search candidate..."
+              placeholder="Search by candidate name or email..."
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            <select
-              value={statusFilter}
-              onChange={(e) => {
-                setStatusFilter(e.target.value);
-                setCurrentPage(1);
-              }}
-            >
-              <option value="">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Accepted">Accepted</option>
-              <option value="Rejected">Rejected</option>
-            </select>
           </div>
+          <select
+            className="login-input status-select"
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
 
-          {loading ? (
-            <p>Loading applications...</p>
-          ) : applications.length === 0 ? (
-            <p>No applications found.</p>
-          ) : (
-            <>
-              <div className="table-container">
-                <table className="table">
-                  <thead>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '4rem' }}>
+            <div className="animate-spin" style={{ display: 'inline-block' }}><Clock size={32} color="var(--primary)" /></div>
+            <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Fetching applications...</p>
+          </div>
+        ) : (
+          <>
+            <div className="table-container">
+              <table className="premium-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>Job Position</th>
+                    <th>Date Applied</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {applications.length === 0 ? (
                     <tr>
-                      <th>Candidate</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Job Title</th>
-                      <th>Status</th>
-                      <th>Actions</th>
+                      <td colSpan="5" style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-muted)' }}>
+                        No applications found matching your criteria.
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {applications.map((app) => (
+                  ) : (
+                    applications.map((app) => (
                       <tr key={app._id}>
-                        <td>{app?.applicant?.name || "No Name"}</td>
-                        <td>{app?.applicant?.email || "No Email"}</td>
-                        <td>{app?.applicant?.candidateProfile?.phone || "N/A"}</td>
-                        <td>{app?.job?.title || "Unknown Job"}</td>
                         <td>
-                          <span
-                            className={`app-status-pill app-status-${app.status
-                              .toLowerCase()
-                              .replace(" ", "-")}`}
-                          >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <div className="sidebar-avatar" style={{ width: '32px', height: '32px' }}>
+                              {app.applicant?.name?.[0] || 'U'}
+                            </div>
+                            <div>
+                              <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{app.applicant?.name}</div>
+                              <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{app.applicant?.email}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)' }}>
+                            <Briefcase size={14} color="var(--primary)" />
+                            {app.job?.title}
+                          </div>
+                        </td>
+                        <td>
+                          {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'}
+                        </td>
+                        <td>
+                          <span className={`status-pill status-${app.status.toLowerCase()}`}>
+                            {getStatusIcon(app.status)}
                             {app.status}
                           </span>
                         </td>
-                        <td className="actions">
-                          {app.status !== "Pending" ? (
-                            <span
-                              className={`app-status-pill app-status-${app.status
-                                .toLowerCase()
-                                .replace(" ", "-")}`}
-                            >
-                              {app.status}
-                            </span>
-                          ) : (
-                            <button
-                              className="view-btn"
-                              onClick={() => {
-                                setSelectedApp(app);
-                                setModalOpen(true);
-                              }}
-                            >
-                              View
-                            </button>
-                          )}
+                        <td>
+                          <button
+                            className="action-btn view-btn"
+                            onClick={() => {
+                              setSelectedApp(app);
+                              setModalOpen(true);
+                            }}
+                          >
+                            Details
+                          </button>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-              <div className="pagination">
+            {totalPages > 1 && (
+              <div className="pagination-container">
                 {Array.from({ length: totalPages }, (_, i) => (
                   <button
                     key={i + 1}
                     onClick={() => handlePageChange(i + 1)}
-                    className={currentPage === i + 1 ? "active-page" : ""}
+                    className={`page-btn ${currentPage === i + 1 ? "active" : ""}`}
                   >
                     {i + 1}
                   </button>
                 ))}
               </div>
-            </>
-          )}
+            )}
+          </>
+        )}
 
-          {/* Modal */}
-          {modalOpen && selectedApp && (
-            <div
-              className="modal-backdrop"
-              onClick={() => setModalOpen(false)}
-            >
-              <div
-                className="modal-content"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <h3>{selectedApp?.applicant?.name}</h3>
-                <p>
-                  <strong>Email:</strong> {selectedApp?.applicant?.email}
-                </p>
-                <p>
-                  <strong>Phone:</strong>{" "}
-                  {selectedApp?.applicant?.candidateProfile?.phone || "N/A"}
-                </p>
-                <p>
-                  <strong>Job Title:</strong> {selectedApp?.job?.title}
-                </p>
-                <p>
-                  <strong>Resume:</strong>{" "}
-                  {selectedApp?.applicant?.candidateProfile?.resume ? (
+
+        {modalOpen && selectedApp && (
+          <div className="modal-overlay" onClick={() => setModalOpen(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h3 className="text-gradient" style={{ fontSize: '1.25rem', margin: 0 }}>Candidate Details</h3>
+                <button onClick={() => setModalOpen(false)} style={{ color: 'var(--text-muted)' }}><X size={20} /></button>
+              </div>
+
+              <div className="modal-body">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+                  <div className="sidebar-avatar" style={{ width: '56px', height: '56px', fontSize: '1.25rem' }}>
+                    {selectedApp.applicant?.name?.[0]}
+                  </div>
+                  <div>
+                    <h2 style={{ fontSize: '1.5rem', margin: 0, color: 'var(--text-primary)' }}>{selectedApp.applicant?.name}</h2>
+                    <span className={`status-pill status-${selectedApp.status.toLowerCase()}`} style={{ marginTop: '0.25rem' }}>
+                      {selectedApp.status}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="modal-info-row">
+                  <div className="modal-info-label"><Mail size={16} /> Email</div>
+                  <div className="modal-info-value">{selectedApp.applicant?.email}</div>
+                </div>
+
+                <div className="modal-info-row">
+                  <div className="modal-info-label"><Phone size={16} /> Phone</div>
+                  <div className="modal-info-value">{selectedApp.applicant?.candidateProfile?.phone || "Not provided"}</div>
+                </div>
+
+                <div className="modal-info-row">
+                  <div className="modal-info-label"><Briefcase size={16} /> Job</div>
+                  <div className="modal-info-value">{selectedApp.job?.title}</div>
+                </div>
+
+                <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'var(--elevated-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+                  <div className="modal-info-label" style={{ marginBottom: '0.5rem' }}>Resume / Portfolio</div>
+                  {selectedApp.applicant?.candidateProfile?.resume ? (
                     <a
                       href={`https://pathrise-project.onrender.com${selectedApp.applicant.candidateProfile.resume}`}
                       target="_blank"
                       rel="noreferrer"
+                      className="resume-link"
                     >
-                      View Resume
+                      View Profile Attachment <ExternalLink size={14} />
                     </a>
                   ) : (
-                    "No resume uploaded"
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>No resume uploaded by candidate.</p>
                   )}
-                </p>
-
-                <div className="modal-actions">
-                  <button
-                    className="contact-btn"
-                    onClick={() => updateStatus(selectedApp._id, "Accepted")}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="reject-btn"
-                    onClick={() => updateStatus(selectedApp._id, "Rejected")}
-                  >
-                    Reject
-                  </button>
-                  <button onClick={() => setModalOpen(false)}>Close</button>
                 </div>
               </div>
+
+              <div className="modal-footer">
+                {selectedApp.status === "Pending" ? (
+                  <>
+                    <button className="action-btn reject-btn" onClick={() => updateStatus(selectedApp._id, "Rejected")}>Reject Candidate</button>
+                    <button className="action-btn accept-btn" onClick={() => updateStatus(selectedApp._id, "Accepted")}>Move to Next Stage</button>
+                  </>
+                ) : (
+                  <button className="btn-secondary" onClick={() => setModalOpen(false)} style={{ padding: '0.5rem 1rem', fontSize: '0.8125rem' }}>Close Details</button>
+                )}
+              </div>
             </div>
-          )}
-        </main>
-      </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
